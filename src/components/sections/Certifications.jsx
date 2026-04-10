@@ -8,7 +8,7 @@ gsap.registerPlugin(ScrollTrigger);
 
 const certifications = [
   {
-    title: '5 Star in C',
+    title: '5 Star in HackerRank',
     issuer: 'HackerRank',
     icon: <Code size={22} />,
     color: '#22c55e',
