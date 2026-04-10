@@ -1,0 +1,65 @@
+.skillsSection {
+  padding: var(--spacing-xxl) 0;
+  overflow: hidden;
+  background: var(--bg-color);
+  position: relative;
+  z-index: var(--z-content);
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.marqueeContainer {
+  position: relative;
+  display: flex;
+  overflow: hidden;
+  user-select: none;
+  gap: 2rem;
+  /* Mask edges for a clean fade effect */
+  mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+  -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+}
+
+.marqueeTrack {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: space-around;
+  gap: 2rem;
+  min-width: 100%;
+}
+
+.skillItem {
+  font-size: clamp(3rem, 6vw, 6rem);
+  font-family: var(--font-heading);
+  font-weight: 700;
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(255, 255, 255, 0.2);
+  transition: all 0.3s ease;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+}
+
+.skillItem:hover {
+  color: var(--accent-primary);
+  -webkit-text-stroke: 1px var(--accent-primary);
+  text-shadow: 0 0 20px rgba(138, 43, 226, 0.5);
+  transform: scale(1.05);
+}
+
+/* For secondary alternate items */
+.skillItem.alt:hover {
+  color: var(--accent-secondary);
+  -webkit-text-stroke: 1px var(--accent-secondary);
+  text-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
+}
+
+/* Add a glowing dot between items */
+.separator {
+  width: 10px;
+  height: 10px;
+  background-color: rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  margin: 0 2rem;
+}

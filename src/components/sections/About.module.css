@@ -1,0 +1,29 @@
+.aboutSection {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-xl);
+  position: relative;
+  z-index: var(--z-content);
+}
+
+.textContainer {
+  max-width: 1000px;
+}
+
+.cinematicText {
+  font-size: clamp(1.5rem, 4vw, 3rem);
+  font-family: var(--font-heading);
+  font-weight: 500;
+  line-height: 1.4;
+  color: var(--text-secondary);
+  opacity: 0.3; /* Base opacity */
+}
+
+/* We will inject span tags around words and change their color with GSAP */
+.word {
+  display: inline-block;
+  margin-right: 0.3em;
+  transition: color 0.3s ease;
+}

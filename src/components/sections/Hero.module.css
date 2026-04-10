@@ -1,0 +1,54 @@
+.heroContainer {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  z-index: var(--z-content);
+  text-align: center;
+  overflow: hidden;
+}
+
+.title {
+  font-size: clamp(4rem, 10vw, 10rem);
+  font-family: var(--font-heading);
+  font-weight: 700;
+  line-height: 1;
+  margin-bottom: 2rem;
+  color: var(--text-primary);
+  text-transform: uppercase;
+  letter-spacing: -0.04em;
+  overflow: hidden;
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
+}
+
+.title span {
+  display: inline-block;
+  transform: translateY(100%);
+  opacity: 0;
+}
+
+.subtitle {
+  font-size: clamp(1rem, 2vw, 1.5rem);
+  color: var(--text-secondary);
+  font-family: var(--font-body);
+  max-width: 600px;
+  line-height: 1.5;
+  font-weight: 300;
+}
+
+.glowBall {
+  position: absolute;
+  width: 400px;
+  height: 400px;
+  background: var(--accent-primary);
+  border-radius: 50%;
+  filter: blur(150px);
+  opacity: 0.2;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: -1;
+  pointer-events: none;
+}

@@ -1,0 +1,125 @@
+.projectsWrapper {
+  overflow: hidden;
+  background: var(--bg-color);
+  position: relative;
+  /* Add subtle texture or noise if needed */
+}
+
+.titleContainer {
+  padding: var(--spacing-xxl) var(--spacing-lg);
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.sectionTitle {
+  font-size: clamp(3rem, 6vw, 6rem);
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  opacity: 0.2;
+  margin-bottom: var(--spacing-xl);
+}
+
+.projectsContainer {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xxl);
+  padding: 0 var(--spacing-lg) var(--spacing-xxl);
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.projectCard {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  padding: var(--spacing-xl);
+  border-radius: 2rem;
+  background: linear-gradient(145deg, rgba(20,20,20,0.8) 0%, rgba(5,5,5,0.9) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 0.5s ease;
+  overflow: hidden;
+}
+
+.projectCard::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  pointer-events: none;
+  background: radial-gradient(circle at var(--x, 50%) var(--y, 50%), rgba(138, 43, 226, 0.1) 0%, transparent 50%);
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  z-index: 0;
+}
+
+.projectCard:hover {
+  transform: translateY(-10px);
+  border-color: rgba(138, 43, 226, 0.3);
+}
+
+.projectCard:hover::before {
+  opacity: 1;
+}
+
+.projectContent {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+.projectHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.projectTitle {
+  font-size: clamp(2rem, 4vw, 4rem);
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.techStack {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.techBadge {
+  background: rgba(255, 255, 255, 0.05);
+  padding: 0.5rem 1rem;
+  border-radius: 100px;
+  font-size: 0.8rem;
+  font-family: var(--font-heading);
+  letter-spacing: 0.05em;
+  color: var(--accent-secondary);
+  border: 1px solid rgba(0, 255, 255, 0.1);
+}
+
+.projectDescription {
+  margin-top: var(--spacing-lg);
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.bullet {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+  font-size: 1.1rem;
+  line-height: 1.6;
+  color: var(--text-secondary);
+}
+
+.bulletIcon {
+  color: var(--accent-primary);
+  flex-shrink: 0;
+  margin-top: 0.2rem;
+}
