@@ -9,7 +9,7 @@ export const About = () => {
   const containerRef = useRef(null);
   const wordsRef = useRef([]);
 
-  const text = "Results-driven B.Tech Computer Science & Engineering (AI/ML) student at Adamas University. Proficient in Python, C++, and JavaScript with a strong foundation in modern software architecture. Passionate about solving real-world problems and building high-performance production-ready systems.";
+  const text = "Results-driven B.Tech Computer Science & Engineering student at Adamas University. Proficient in Python, C++, and JavaScript with a strong foundation in modern software architecture. Passionate about solving real-world problems and building high-performance production-ready systems.";
   
   const words = text.split(" ");
 

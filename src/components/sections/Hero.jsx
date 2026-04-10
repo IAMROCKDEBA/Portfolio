@@ -40,7 +40,7 @@ export const Hero = () => {
         ))}
       </h1>
       <p className={styles.subtitle} ref={subtitleRef}>
-        B.Tech Computer Science <span className="text-gradient">&amp;</span> Engineering (AI/ML)
+        B.Tech Computer Science <span className="text-gradient">&amp;</span> Engineering student at Adamas University.
         <br/>
         Building elegant experiences <span className="text-gradient">&amp;</span> production-ready systems.
       </p>
