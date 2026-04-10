@@ -1,0 +1,31 @@
+.dot, .ring {
+  position: fixed;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  z-index: var(--z-cursor);
+  will-change: transform;
+  border-radius: 50%;
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  background: var(--text-primary);
+  transform: translate(-50%, -50%);
+  mix-blend-mode: difference;
+}
+
+.ring {
+  width: 40px;
+  height: 40px;
+  border: 1.5px solid var(--text-primary);
+  transform: translate(-50%, -50%);
+  mix-blend-mode: difference;
+}
+
+@media (hover: none) and (pointer: coarse) {
+  .dot, .ring {
+    display: none;
+  }
+}

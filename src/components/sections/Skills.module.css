@@ -1,12 +1,21 @@
-.skillsSection {
-  padding: var(--spacing-xxl) 0;
+.skills {
+  padding: var(--spacing-section) 0;
   overflow: hidden;
-  background: var(--bg-color);
   position: relative;
   z-index: var(--z-content);
+}
+
+.headingRow {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 var(--spacing-lg);
+  margin-bottom: 3rem;
+}
+
+.marqueeGroup {
   display: flex;
   flex-direction: column;
-  gap: 2rem;
+  gap: 1.5rem;
 }
 
 .marqueeContainer {
@@ -14,52 +23,53 @@
   display: flex;
   overflow: hidden;
   user-select: none;
-  gap: 2rem;
-  /* Mask edges for a clean fade effect */
-  mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
-  -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+  /* Smooth edge fade */
+  mask-image: linear-gradient(to right, transparent 0%, black 5%, black 95%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, black 5%, black 95%, transparent 100%);
+  padding: 0.5rem 0;
 }
 
 .marqueeTrack {
   display: flex;
   flex-shrink: 0;
   align-items: center;
-  justify-content: space-around;
-  gap: 2rem;
-  min-width: 100%;
+  gap: 1.5rem;
+  will-change: transform;
 }
 
 .skillItem {
-  font-size: clamp(3rem, 6vw, 6rem);
-  font-family: var(--font-heading);
-  font-weight: 700;
+  font-size: clamp(3rem, 7vw, 7rem);
+  font-family: var(--font-display);
+  font-weight: 800;
   color: transparent;
-  -webkit-text-stroke: 1px rgba(255, 255, 255, 0.2);
-  transition: all 0.3s ease;
+  -webkit-text-stroke: 1.5px rgba(240, 238, 246, 0.12);
+  transition: all 0.5s var(--ease-out-expo);
   white-space: nowrap;
   display: flex;
   align-items: center;
+  letter-spacing: -0.02em;
+  padding: 0.25rem 0;
 }
 
 .skillItem:hover {
-  color: var(--accent-primary);
-  -webkit-text-stroke: 1px var(--accent-primary);
-  text-shadow: 0 0 20px rgba(138, 43, 226, 0.5);
+  color: var(--accent-violet);
+  -webkit-text-stroke: 1.5px var(--accent-violet);
+  text-shadow:
+    0 0 30px rgba(138, 92, 245, 0.4),
+    0 0 60px rgba(138, 92, 245, 0.15);
   transform: scale(1.05);
 }
 
-/* For secondary alternate items */
 .skillItem.alt:hover {
-  color: var(--accent-secondary);
-  -webkit-text-stroke: 1px var(--accent-secondary);
-  text-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
+  color: var(--accent-cyan);
+  -webkit-text-stroke: 1.5px var(--accent-cyan);
+  text-shadow:
+    0 0 30px rgba(0, 229, 255, 0.4),
+    0 0 60px rgba(0, 229, 255, 0.15);
 }
 
-/* Add a glowing dot between items */
 .separator {
-  width: 10px;
-  height: 10px;
-  background-color: rgba(255, 255, 255, 0.2);
-  border-radius: 50%;
-  margin: 0 2rem;
+  font-size: 1rem;
+  color: rgba(138, 92, 245, 0.3);
+  flex-shrink: 0;
 }

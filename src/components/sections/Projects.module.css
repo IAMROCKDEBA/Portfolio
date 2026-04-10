@@ -1,76 +1,143 @@
-.projectsWrapper {
-  overflow: hidden;
-  background: var(--bg-color);
+.wrapper {
   position: relative;
-  /* Add subtle texture or noise if needed */
+  z-index: var(--z-content);
+  overflow: hidden;
 }
 
-.titleContainer {
-  padding: var(--spacing-xxl) var(--spacing-lg);
+/* ── Header ── */
+.header {
+  padding: var(--spacing-xl) var(--spacing-lg);
   max-width: 1400px;
   margin: 0 auto;
+  margin-bottom: 2rem;
+}
+
+.headerInner {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 }
 
 .sectionTitle {
-  font-size: clamp(3rem, 6vw, 6rem);
-  text-transform: uppercase;
-  color: var(--text-secondary);
-  opacity: 0.2;
-  margin-bottom: var(--spacing-xl);
+  font-size: clamp(3rem, 7vw, 7rem);
+  font-weight: 800;
+  line-height: 1;
+  color: var(--text-primary);
 }
 
-.projectsContainer {
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-xxl);
-  padding: 0 var(--spacing-lg) var(--spacing-xxl);
-  max-width: 1400px;
-  margin: 0 auto;
+.titleStroke {
+  color: transparent;
+  -webkit-text-stroke: 1.5px var(--text-tertiary);
 }
 
-.projectCard {
-  display: flex;
-  flex-direction: column;
-  position: relative;
-  padding: var(--spacing-xl);
-  border-radius: 2rem;
-  background: linear-gradient(145deg, rgba(20,20,20,0.8) 0%, rgba(5,5,5,0.9) 100%);
-  border: 1px solid rgba(255, 255, 255, 0.05);
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
-  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1),
-              border-color 0.5s ease;
+/* ── Progress ── */
+.progressTrack {
+  width: 100%;
+  height: 2px;
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 2px;
+  margin-top: 2rem;
   overflow: hidden;
 }
 
-.projectCard::before {
-  content: '';
+.progressFill {
+  width: 100%;
+  height: 100%;
+  background: var(--gradient-primary);
+  transform-origin: left center;
+  transform: scaleX(0);
+  will-change: transform;
+}
+
+/* ── Horizontal Scroll ── */
+.scrollContainer {
+  display: flex;
+  will-change: transform;
+}
+
+.panel {
+  min-width: 85vw;
+  max-width: 900px;
+  height: 70vh;
+  padding: 0 var(--spacing-lg);
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.panel:first-child {
+  margin-left: 5vw;
+}
+
+.panel:last-child {
+  margin-right: 15vw;
+}
+
+/* ── Card ── */
+.card {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  padding: clamp(2rem, 4vw, 3.5rem);
+  border-radius: 2rem;
+  background: linear-gradient(160deg, rgba(15, 15, 25, 0.9) 0%, rgba(5, 5, 10, 0.95) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  overflow: hidden;
+  transition: border-color 0.6s var(--ease-out-expo);
+  will-change: transform, opacity;
+}
+
+.card:hover {
+  border-color: var(--accent, var(--accent-violet));
+}
+
+/* ── Spotlight ── */
+.spotlight {
   position: absolute;
-  top: 0; left: 0; right: 0; bottom: 0;
+  inset: 0;
   pointer-events: none;
-  background: radial-gradient(circle at var(--x, 50%) var(--y, 50%), rgba(138, 43, 226, 0.1) 0%, transparent 50%);
+  background: radial-gradient(
+    600px circle at var(--mx, 50%) var(--my, 50%),
+    rgba(138, 92, 245, 0.06) 0%,
+    transparent 50%
+  );
   opacity: 0;
   transition: opacity 0.5s ease;
   z-index: 0;
 }
 
-.projectCard:hover {
-  transform: translateY(-10px);
-  border-color: rgba(138, 43, 226, 0.3);
-}
-
-.projectCard:hover::before {
+.card:hover .spotlight {
   opacity: 1;
 }
 
-.projectContent {
+/* ── Project Number ── */
+.projectNum {
+  position: absolute;
+  top: -1rem;
+  right: 2rem;
+  font-family: var(--font-display);
+  font-size: clamp(8rem, 20vw, 18rem);
+  font-weight: 800;
+  line-height: 1;
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(255, 255, 255, 0.04);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ── Card Content ── */
+.cardContent {
   position: relative;
   z-index: 1;
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-md);
+  gap: 1.5rem;
 }
 
-.projectHeader {
+.cardTop {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
@@ -78,11 +145,14 @@
   gap: 1rem;
 }
 
-.projectTitle {
-  font-size: clamp(2rem, 4vw, 4rem);
-  font-weight: 700;
-  color: var(--text-primary);
-  margin: 0;
+.category {
+  font-family: var(--font-heading);
+  font-size: 0.8rem;
+  font-weight: 500;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--accent, var(--accent-violet));
+  opacity: 0.8;
 }
 
 .techStack {
@@ -92,34 +162,85 @@
 }
 
 .techBadge {
-  background: rgba(255, 255, 255, 0.05);
-  padding: 0.5rem 1rem;
+  background: rgba(255, 255, 255, 0.04);
+  padding: 0.4rem 0.8rem;
   border-radius: 100px;
-  font-size: 0.8rem;
+  font-size: 0.75rem;
   font-family: var(--font-heading);
   letter-spacing: 0.05em;
-  color: var(--accent-secondary);
-  border: 1px solid rgba(0, 255, 255, 0.1);
-}
-
-.projectDescription {
-  margin-top: var(--spacing-lg);
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-
-.bullet {
-  display: flex;
-  gap: 1rem;
-  align-items: flex-start;
-  font-size: 1.1rem;
-  line-height: 1.6;
   color: var(--text-secondary);
+  border: 1px solid rgba(255, 255, 255, 0.06);
 }
 
-.bulletIcon {
-  color: var(--accent-primary);
-  flex-shrink: 0;
-  margin-top: 0.2rem;
+.projectTitle {
+  font-family: var(--font-display);
+  font-size: clamp(2.5rem, 5vw, 5rem);
+  font-weight: 800;
+  color: var(--text-primary);
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+}
+
+.projectDesc {
+  font-size: clamp(0.9rem, 1.2vw, 1.1rem);
+  line-height: 1.7;
+  color: var(--text-secondary);
+  max-width: 550px;
+}
+
+.cardFooter {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 1rem;
+  color: var(--accent, var(--accent-violet));
+  cursor: none;
+  width: max-content;
+  padding: 0.75rem 0;
+  position: relative;
+}
+
+.cardFooter::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background: var(--accent, var(--accent-violet));
+  transform: scaleX(0);
+  transform-origin: right center;
+  transition: transform 0.5s var(--ease-out-expo);
+}
+
+.cardFooter:hover::after {
+  transform: scaleX(1);
+  transform-origin: left center;
+}
+
+.viewProject {
+  font-family: var(--font-heading);
+  font-size: 0.85rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+  .panel {
+    min-width: 90vw;
+    height: 60vh;
+    padding: 0 var(--spacing-md);
+  }
+
+  .projectNum {
+    font-size: 6rem;
+    top: 0;
+    right: 1rem;
+  }
+
+  .card {
+    padding: 2rem;
+  }
 }

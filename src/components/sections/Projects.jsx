@@ -1,106 +1,179 @@
 import React, { useRef, useEffect } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { ArrowRight, Activity, ShieldCheck, Server } from 'lucide-react';
+import { ArrowUpRight } from 'lucide-react';
 import styles from './Projects.module.css';
 
 gsap.registerPlugin(ScrollTrigger);
 
 const projects = [
   {
-    title: "ClassConnect",
-    tech: ["React", "Node.js", "Express", "PostgreSQL", "JWT"],
-    icon: <Activity size={32} className={styles.bulletIcon} />,
-    points: [
-      "Architected and deployed a full-stack student-mentor management platform with secure JWT-based role-based access control, supporting multiple user roles (student, mentor, admin).",
-      "Built real-time problem tracking, analytics dashboards, and automated reporting modules, reducing manual administrative effort significantly.",
-      "Designed a scalable, responsive UI in React with custom CSS; integrated RESTful APIs and nodemon/dotenv for streamlined development workflows.",
-    ]
+    num: '01',
+    title: 'ClassConnect',
+    category: 'Full-Stack Platform',
+    tech: ['React', 'Node.js', 'Express', 'PostgreSQL', 'JWT'],
+    description: 'Architected and deployed a full-stack student-mentor management platform with secure JWT-based role-based access control. Built real-time problem tracking, analytics dashboards, and automated reporting modules.',
+    color: '#8a5cf5',
   },
   {
-    title: "Altplate",
-    tech: ["React", "Node.js", "Express", "MongoDB", "Role-Based Auth"],
-    icon: <ShieldCheck size={32} className={styles.bulletIcon} />,
-    points: [
-      "Engineered a full-stack university food-court management application to replace error-prone manual meal selection and parcel-management processes.",
-      "Implemented secure role-based dashboards for students, wardens, and staff, enabling real-time submission tracking and automated data handling.",
-      "Reduced operational errors and improved accountability by digitising the entire food-selection workflow end-to-end.",
-    ]
+    num: '02',
+    title: 'Altplate',
+    category: 'Enterprise App',
+    tech: ['React', 'Node.js', 'Express', 'MongoDB', 'RBAC'],
+    description: 'Engineered a university food-court management application replacing error-prone manual processes. Implemented secure role-based dashboards for students, wardens, and staff with real-time submission tracking.',
+    color: '#00e5ff',
   },
   {
-    title: "PC Sentinel",
-    tech: ["Node.js", "Express", "PowerShell", "Telegram Bot API"],
-    icon: <Server size={32} className={styles.bulletIcon} />,
-    points: [
-      "Developed a bot-integrated web application to remotely monitor a home PC server's online/offline status via Telegram with real-time push alerts.",
-      "Implemented a PowerShell agent on the host machine and a Node.js/Express backend to relay heartbeat signals and trigger Telegram notifications on downtime.",
-    ]
-  }
+    num: '03',
+    title: 'PC Sentinel',
+    category: 'IoT Monitoring',
+    tech: ['Node.js', 'Express', 'PowerShell', 'Telegram API'],
+    description: 'Developed a bot-integrated application to remotely monitor a home PC server via Telegram with real-time push alerts. Implemented PowerShell agent and Node.js backend for heartbeat signal relay.',
+    color: '#ff2d75',
+  },
 ];
 
 export const Projects = () => {
+  const wrapperRef = useRef(null);
   const containerRef = useRef(null);
   const cardsRef = useRef([]);
+  const headerRef = useRef(null);
+  const progressRef = useRef(null);
 
   useEffect(() => {
-    cardsRef.current.forEach((card, i) => {
-      gsap.fromTo(card, 
-        { y: 100, opacity: 0 },
-        { 
-          y: 0, 
-          opacity: 1, 
-          duration: 1, 
-          ease: "power3.out",
+    const ctx = gsap.context(() => {
+      const container = containerRef.current;
+      const totalWidth = container.scrollWidth - window.innerWidth;
+
+      // Header animation
+      gsap.fromTo(headerRef.current,
+        { y: 80, opacity: 0 },
+        {
+          y: 0, opacity: 1, duration: 1.2, ease: 'power3.out',
           scrollTrigger: {
-            trigger: card,
-            start: "top 85%",
-            toggleActions: "play none none reverse"
+            trigger: wrapperRef.current,
+            start: 'top 80%',
           }
         }
       );
-    });
+
+      // Horizontal scroll
+      const scrollTween = gsap.to(container, {
+        x: -totalWidth,
+        ease: 'none',
+        scrollTrigger: {
+          trigger: wrapperRef.current,
+          start: 'top top',
+          end: () => `+=${totalWidth}`,
+          scrub: 1,
+          pin: true,
+          anticipatePin: 1,
+          invalidateOnRefresh: true,
+        },
+      });
+
+      // Progress bar
+      gsap.to(progressRef.current, {
+        scaleX: 1,
+        ease: 'none',
+        scrollTrigger: {
+          trigger: wrapperRef.current,
+          start: 'top top',
+          end: () => `+=${totalWidth}`,
+          scrub: 1,
+        },
+      });
+
+      // Per-card reveal animations (within horizontal scroll)
+      cardsRef.current.filter(Boolean).forEach((card, i) => {
+        gsap.fromTo(card,
+          { opacity: 0, y: 60 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 1,
+            ease: 'power3.out',
+            scrollTrigger: {
+              trigger: card,
+              containerAnimation: scrollTween,
+              start: 'left 80%',
+              toggleActions: 'play none none reverse',
+            }
+          }
+        );
+      });
+    }, wrapperRef);
+
+    return () => ctx.revert();
   }, []);
 
+  // Spotlight / cursor glow on card
   const handleMouseMove = (e, index) => {
     const card = cardsRef.current[index];
     if (!card) return;
     const rect = card.getBoundingClientRect();
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
-    card.style.setProperty('--x', `${x}px`);
-    card.style.setProperty('--y', `${y}px`);
+    card.style.setProperty('--mx', `${x}px`);
+    card.style.setProperty('--my', `${y}px`);
   };
 
   return (
-    <section className={styles.projectsWrapper} ref={containerRef}>
-      <div className={styles.titleContainer}>
-        <h2 className={styles.sectionTitle}>Selected Works</h2>
+    <section className={styles.wrapper} ref={wrapperRef} id="projects">
+      {/* Section header */}
+      <div className={styles.header} ref={headerRef}>
+        <div className={styles.headerInner}>
+          <span className="section-label">
+            <span>Selected Work</span>
+          </span>
+          <h2 className={styles.sectionTitle}>
+            <span className={styles.titleStroke}>Featured</span> Projects
+          </h2>
+        </div>
+        {/* Horizontal progress */}
+        <div className={styles.progressTrack}>
+          <div className={styles.progressFill} ref={progressRef}></div>
+        </div>
       </div>
-      <div className={styles.projectsContainer}>
+
+      {/* Horizontal scroll container */}
+      <div className={styles.scrollContainer} ref={containerRef}>
         {projects.map((proj, idx) => (
-          <div 
-            key={idx} 
-            className={styles.projectCard}
-            ref={el => cardsRef.current[idx] = el}
-            onMouseMove={(e) => handleMouseMove(e, idx)}
+          <div
+            key={idx}
+            className={styles.panel}
           >
-            <div className={styles.projectContent}>
-              <div className={styles.projectHeader}>
+            <div
+              className={styles.card}
+              ref={el => cardsRef.current[idx] = el}
+              onMouseMove={(e) => handleMouseMove(e, idx)}
+              style={{ '--accent': proj.color }}
+            >
+              {/* Large project number */}
+              <div className={styles.projectNum}>{proj.num}</div>
+
+              <div className={styles.cardContent}>
+                <div className={styles.cardTop}>
+                  <span className={styles.category}>{proj.category}</span>
+                  <div className={styles.techStack}>
+                    {proj.tech.map((t, i) => (
+                      <span key={i} className={styles.techBadge}>{t}</span>
+                    ))}
+                  </div>
+                </div>
+
                 <h3 className={styles.projectTitle}>{proj.title}</h3>
-                <div className={styles.techStack}>
-                  {proj.tech.map((t, i) => (
-                    <span key={i} className={styles.techBadge}>{t}</span>
-                  ))}
+
+                <p className={styles.projectDesc}>{proj.description}</p>
+
+                <div className={styles.cardFooter} data-cursor="hover">
+                  <span className={styles.viewProject}>View Project</span>
+                  <ArrowUpRight size={18} />
                 </div>
               </div>
-              <div className={styles.projectDescription}>
-                {proj.points.map((pt, i) => (
-                  <div key={i} className={styles.bullet}>
-                    {i === 0 ? proj.icon : <ArrowRight size={24} className={styles.bulletIcon} />}
-                    <p>{pt}</p>
-                  </div>
-                ))}
-              </div>
+
+              {/* Cursor spotlight */}
+              <div className={styles.spotlight}></div>
             </div>
           </div>
         ))}

@@ -1,0 +1,83 @@
+.progressBar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: var(--gradient-primary);
+  z-index: calc(var(--z-nav) + 1);
+  transform-origin: left center;
+  transform: scaleX(0);
+  will-change: transform;
+}
+
+.nav {
+  position: fixed;
+  top: 1.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: var(--z-nav);
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  padding: 0.75rem 1.5rem;
+  background: rgba(10, 10, 18, 0.5);
+  backdrop-filter: blur(20px) saturate(1.5);
+  -webkit-backdrop-filter: blur(20px) saturate(1.5);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 100px;
+  will-change: transform, opacity;
+}
+
+.logo {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 1.1rem;
+  letter-spacing: 0.05em;
+  color: var(--text-primary);
+  cursor: none;
+  user-select: none;
+  padding: 0.25rem 0.5rem;
+}
+
+.links {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.navLink {
+  font-family: var(--font-heading);
+  font-size: 0.8rem;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  color: var(--text-secondary);
+  background: none;
+  border: none;
+  padding: 0.5rem 0.75rem;
+  border-radius: 100px;
+  cursor: none;
+  transition: color 0.3s ease, background 0.3s ease;
+  white-space: nowrap;
+}
+
+.navLink:hover {
+  color: var(--text-primary);
+}
+
+.navLink.active {
+  color: var(--text-primary);
+  background: rgba(138, 92, 245, 0.15);
+}
+
+@media (max-width: 600px) {
+  .nav {
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+  }
+
+  .navLink {
+    font-size: 0.7rem;
+    padding: 0.4rem 0.5rem;
+  }
+}

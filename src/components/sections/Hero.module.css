@@ -1,5 +1,6 @@
-.heroContainer {
+.hero {
   height: 100vh;
+  height: 100dvh;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -8,47 +9,195 @@
   z-index: var(--z-content);
   text-align: center;
   overflow: hidden;
+  will-change: transform, opacity;
 }
 
-.title {
-  font-size: clamp(4rem, 10vw, 10rem);
-  font-family: var(--font-heading);
-  font-weight: 700;
-  line-height: 1;
-  margin-bottom: 2rem;
-  color: var(--text-primary);
-  text-transform: uppercase;
-  letter-spacing: -0.04em;
+/* ── Title ── */
+.titleLine {
   overflow: hidden;
-  clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
+  perspective: 800px;
 }
 
-.title span {
+.char {
+  font-family: var(--font-display);
+  font-size: clamp(3rem, 11vw, 12rem);
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.04em;
+  color: var(--text-primary);
   display: inline-block;
-  transform: translateY(100%);
+  will-change: transform;
+  transform-style: preserve-3d;
+}
+
+.charGradient {
+  background: var(--gradient-primary);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ── Subtitle ── */
+.subtitle {
+  margin-top: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  flex-wrap: wrap;
   opacity: 0;
 }
 
-.subtitle {
-  font-size: clamp(1rem, 2vw, 1.5rem);
+.scrambleText {
+  font-family: var(--font-heading);
+  font-size: clamp(0.75rem, 1.5vw, 1rem);
+  font-weight: 500;
+  letter-spacing: 0.25em;
   color: var(--text-secondary);
-  font-family: var(--font-body);
-  max-width: 600px;
-  line-height: 1.5;
-  font-weight: 300;
 }
 
-.glowBall {
+.divider {
+  color: var(--accent-violet);
+  font-size: 1.2rem;
+}
+
+/* ── Scroll Indicator ── */
+.scrollIndicator {
+  position: absolute;
+  bottom: 3rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  opacity: 0;
+}
+
+.scrollLine {
+  width: 1px;
+  height: 60px;
+  background: rgba(255, 255, 255, 0.1);
+  position: relative;
+  overflow: hidden;
+  border-radius: 1px;
+}
+
+.scrollDot {
+  width: 3px;
+  height: 12px;
+  background: var(--accent-violet);
+  border-radius: 2px;
+  position: absolute;
+  left: -1px;
+  animation: scrollPulse 2s ease-in-out infinite;
+}
+
+@keyframes scrollPulse {
+  0% { top: 0; opacity: 1; }
+  50% { top: 80%; opacity: 0.5; }
+  100% { top: 0; opacity: 1; }
+}
+
+.scrollText {
+  font-family: var(--font-heading);
+  font-size: 0.65rem;
+  letter-spacing: 0.3em;
+  color: var(--text-tertiary);
+}
+
+/* ── Glow Orbs ── */
+.glowOrb {
   position: absolute;
   width: 400px;
   height: 400px;
-  background: var(--accent-primary);
   border-radius: 50%;
-  filter: blur(150px);
-  opacity: 0.2;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  z-index: -1;
+  filter: blur(180px);
+  opacity: 0.12;
   pointer-events: none;
+  z-index: -1;
+}
+
+/* ── Decorations ── */
+.decorations {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.decorCircle {
+  position: absolute;
+  border-radius: 50%;
+  border: 1px solid rgba(138, 92, 245, 0.2);
+  opacity: 0;
+}
+
+.decorRing {
+  position: absolute;
+  border-radius: 50%;
+  border: 1px solid rgba(0, 229, 255, 0.15);
+  opacity: 0;
+}
+
+.decorDot {
+  position: absolute;
+  border-radius: 50%;
+  background: var(--accent-violet);
+  opacity: 0;
+}
+
+.decorLine {
+  position: absolute;
+  width: 60px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(0, 229, 255, 0.3), transparent);
+  opacity: 0;
+}
+
+.decorCross {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  opacity: 0;
+}
+
+.decorCross::before,
+.decorCross::after {
+  content: '';
+  position: absolute;
+  background: rgba(255, 45, 117, 0.2);
+}
+
+.decorCross::before {
+  width: 100%;
+  height: 1px;
+  top: 50%;
+}
+
+.decorCross::after {
+  width: 1px;
+  height: 100%;
+  left: 50%;
+}
+
+/* ── Content stacking ── */
+.content {
+  position: relative;
+  z-index: 1;
+}
+
+@media (max-width: 768px) {
+  .subtitle {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .divider {
+    display: none;
+  }
+
+  .char {
+    font-size: clamp(3rem, 15vw, 6rem);
+  }
 }
