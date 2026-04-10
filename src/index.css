@@ -177,7 +177,7 @@ img {
 
 /* ── Interactive elements cursor hint ── */
 a, button, [data-cursor="hover"] {
-  cursor: none;
+  cursor: pointer;
 }
 
 /* ── Selection ── */

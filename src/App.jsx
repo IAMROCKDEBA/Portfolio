@@ -1,12 +1,12 @@
 import React, { useState, useCallback } from 'react';
 import { SmoothScrollProvider } from './context/SmoothScroll';
 import { Preloader } from './components/Preloader';
-import { CustomCursor } from './components/CustomCursor';
 import { Navigation } from './components/Navigation';
 import { ThreeBackground } from './components/ThreeBackground';
 import { Hero } from './components/sections/Hero';
 import { About } from './components/sections/About';
 import { Skills } from './components/sections/Skills';
+import { Certifications } from './components/sections/Certifications';
 import { Projects } from './components/sections/Projects';
 import { Footer } from './components/sections/Footer';
 import './App.css';
@@ -21,7 +21,6 @@ function App() {
   return (
     <>
       {!isLoaded && <Preloader onComplete={handlePreloaderComplete} />}
-      <CustomCursor />
       <SmoothScrollProvider>
         <Navigation isVisible={isLoaded} />
         <ThreeBackground />
@@ -29,6 +28,7 @@ function App() {
           <Hero isLoaded={isLoaded} />
           <About />
           <Skills />
+          <Certifications />
           <Projects />
           <Footer />
         </main>

@@ -100,11 +100,8 @@
   transform-origin: left center;
 }
 
-/* ── Grid ── */
-.grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: var(--spacing-xl);
+/* ── Contact Area ── */
+.contactArea {
   max-width: 1400px;
   margin: 0 auto;
   width: 100%;
@@ -120,11 +117,10 @@
   margin-bottom: 1.5rem;
 }
 
-.linkList {
-  list-style: none;
+.contactGrid {
   display: flex;
-  flex-direction: column;
-  gap: 0.25rem;
+  flex-wrap: wrap;
+  gap: 1rem 3rem;
 }
 
 .magneticLink {
@@ -140,31 +136,6 @@
 
 .magneticLink:hover {
   color: var(--accent-cyan);
-}
-
-.certList {
-  list-style: none;
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-}
-
-.certItem {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  color: var(--text-primary);
-  font-size: clamp(0.9rem, 1.2vw, 1.1rem);
-  line-height: 1.4;
-  will-change: transform, opacity;
-}
-
-.certDot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: var(--accent-violet);
-  flex-shrink: 0;
 }
 
 /* ── Bottom ── */
@@ -207,6 +178,11 @@
 @media (max-width: 768px) {
   .ctaGiant {
     font-size: clamp(3rem, 15vw, 8rem);
+  }
+
+  .contactGrid {
+    flex-direction: column;
+    gap: 0.25rem;
   }
 
   .bottomBar {

@@ -1,0 +1,167 @@
+.section {
+  padding: var(--spacing-section) 0;
+  position: relative;
+  z-index: var(--z-content);
+}
+
+.container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 var(--spacing-lg);
+}
+
+/* ── Header ── */
+.header {
+  margin-bottom: 4rem;
+}
+
+.title {
+  font-size: clamp(2.5rem, 6vw, 6rem);
+  font-weight: 800;
+  line-height: 1;
+  color: var(--text-primary);
+}
+
+.titleStroke {
+  color: transparent;
+  -webkit-text-stroke: 1.5px var(--text-tertiary);
+}
+
+/* ── Grid ── */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+}
+
+/* ── Card ── */
+.card {
+  position: relative;
+  padding: 2rem;
+  border-radius: 1.25rem;
+  background: linear-gradient(160deg, rgba(15, 15, 25, 0.85) 0%, rgba(5, 5, 10, 0.9) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  overflow: hidden;
+  transition: border-color 0.5s var(--ease-out-expo),
+              box-shadow 0.5s ease,
+              transform 0.5s var(--ease-out-expo);
+  will-change: transform, opacity;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  cursor: pointer;
+}
+
+.card:hover {
+  border-color: var(--card-accent, var(--accent-violet));
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.3),
+              0 0 0 1px var(--card-accent, var(--accent-violet));
+  transform: translateY(-4px);
+}
+
+/* ── Spotlight ── */
+.spotlight {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(
+    400px circle at var(--cx, 50%) var(--cy, 50%),
+    color-mix(in srgb, var(--card-accent, #8a5cf5) 8%, transparent) 0%,
+    transparent 50%
+  );
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  z-index: 0;
+}
+
+.card:hover .spotlight {
+  opacity: 1;
+}
+
+/* ── Card Top ── */
+.cardTop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+  z-index: 1;
+}
+
+.iconWrap {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: color-mix(in srgb, var(--card-accent, #8a5cf5) 12%, transparent);
+  border: 1px solid color-mix(in srgb, var(--card-accent, #8a5cf5) 20%, transparent);
+  color: var(--card-accent, var(--accent-violet));
+  transition: background 0.3s ease, transform 0.3s ease;
+}
+
+.card:hover .iconWrap {
+  background: color-mix(in srgb, var(--card-accent, #8a5cf5) 20%, transparent);
+  transform: scale(1.05);
+}
+
+.issuer {
+  font-family: var(--font-heading);
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  padding: 0.35rem 0.75rem;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 100px;
+  background: rgba(255, 255, 255, 0.03);
+}
+
+/* ── Content ── */
+.certTitle {
+  font-family: var(--font-display);
+  font-size: clamp(1.3rem, 2vw, 1.8rem);
+  font-weight: 700;
+  color: var(--text-primary);
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  position: relative;
+  z-index: 1;
+}
+
+.certDesc {
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: var(--text-secondary);
+  position: relative;
+  z-index: 1;
+}
+
+/* ── Accent Line ── */
+.accentLine {
+  height: 2px;
+  width: 0;
+  background: var(--card-accent, var(--accent-violet));
+  border-radius: 2px;
+  margin-top: auto;
+  transition: width 0.6s var(--ease-out-expo);
+  position: relative;
+  z-index: 1;
+}
+
+.card:hover .accentLine {
+  width: 100%;
+}
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+  .grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .card {
+    padding: 1.5rem;
+  }
+}

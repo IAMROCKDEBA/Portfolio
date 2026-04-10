@@ -35,7 +35,7 @@
   font-size: 1.1rem;
   letter-spacing: 0.05em;
   color: var(--text-primary);
-  cursor: none;
+  cursor: pointer;
   user-select: none;
   padding: 0.25rem 0.5rem;
 }
@@ -56,7 +56,7 @@
   border: none;
   padding: 0.5rem 0.75rem;
   border-radius: 100px;
-  cursor: none;
+  cursor: pointer;
   transition: color 0.3s ease, background 0.3s ease;
   white-space: nowrap;
 }

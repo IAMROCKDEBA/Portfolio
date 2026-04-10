@@ -55,7 +55,6 @@ export const Footer = () => {
   const titleRef = useRef(null);
   const lineRef = useRef(null);
   const linksRef = useRef([]);
-  const certsRef = useRef([]);
   const bottomRef = useRef(null);
 
   useEffect(() => {
@@ -97,19 +96,6 @@ export const Footer = () => {
         }
       );
 
-      // Stagger certifications
-      gsap.fromTo(certsRef.current.filter(Boolean),
-        { y: 20, opacity: 0 },
-        {
-          y: 0, opacity: 1, duration: 0.6, ease: 'power3.out',
-          stagger: 0.08,
-          scrollTrigger: {
-            trigger: lineRef.current,
-            start: 'top 75%',
-          }
-        }
-      );
-
       // Bottom bar
       gsap.fromTo(bottomRef.current,
         { opacity: 0 },
@@ -143,49 +129,22 @@ export const Footer = () => {
       {/* Separator */}
       <div className={styles.separator} ref={lineRef}></div>
 
-      {/* Grid */}
-      <div className={styles.grid}>
-        <div className={styles.column}>
-          <h4 className={styles.colTitle}>Contact & Socials</h4>
-          <ul className={styles.linkList}>
-            <li ref={el => linksRef.current[0] = el}>
-              <MagneticLink href="mailto:debarshi@outlook.com">
-                debarshi@outlook.com
-              </MagneticLink>
-            </li>
-            <li ref={el => linksRef.current[1] = el}>
-              <MagneticLink href="tel:+919199360412">
-                +91 91993 60412
-              </MagneticLink>
-            </li>
-            <li ref={el => linksRef.current[2] = el}>
-              <MagneticLink href="#">
-                LinkedIn
-              </MagneticLink>
-            </li>
-            <li ref={el => linksRef.current[3] = el}>
-              <MagneticLink href="#">
-                GitHub
-              </MagneticLink>
-            </li>
-          </ul>
-        </div>
-
-        <div className={styles.column}>
-          <h4 className={styles.colTitle}>Certifications</h4>
-          <ul className={styles.certList}>
-            {[
-              'HackerRank – 5 Star in C',
-              'Udemy / freeCodeCamp – C for Beginners',
-              'TryHackMe / Cybrary – Offensive Security Intro',
-              'AWS – Machine Learning Foundations',
-            ].map((cert, i) => (
-              <li key={i} className={styles.certItem} ref={el => certsRef.current[i] = el}>
-                <span className={styles.certDot}></span>
-                {cert}
-              </li>
-            ))}
-          </ul>
+      {/* Contact info only */}
+      <div className={styles.contactArea}>
+        <h4 className={styles.colTitle}>Get in Touch</h4>
+        <div className={styles.contactGrid}>
+          <MagneticLink href="mailto:debarshi@outlook.com">
+            <span ref={el => linksRef.current[0] = el}>debarshi@outlook.com</span>
+          </MagneticLink>
+          <MagneticLink href="tel:+919199360412">
+            <span ref={el => linksRef.current[1] = el}>+91 91993 60412</span>
+          </MagneticLink>
+          <MagneticLink href="#">
+            <span ref={el => linksRef.current[2] = el}>LinkedIn</span>
+          </MagneticLink>
+          <MagneticLink href="#">
+            <span ref={el => linksRef.current[3] = el}>GitHub</span>
+          </MagneticLink>
         </div>
       </div>
 
