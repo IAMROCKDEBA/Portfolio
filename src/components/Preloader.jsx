@@ -1,4 +1,5 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { flushSync } from 'react-dom';
 import { gsap } from 'gsap';
 import styles from './Preloader.module.css';
 
@@ -10,6 +11,16 @@ export const Preloader = ({ onComplete }) => {
   const yearRef = useRef(null);
   const barsRef = useRef([]);
   const [count, setCount] = useState(0);
+
+  // Set GSAP from-states synchronously before the browser's first paint so the
+  // name and line never flash at their natural (fully-visible) CSS positions.
+  useLayoutEffect(() => {
+    const nameChars = nameRef.current?.querySelectorAll('span');
+    if (nameChars?.length) {
+      gsap.set(nameChars, { y: '110%', opacity: 0, rotateX: -60 });
+    }
+    gsap.set(lineRef.current, { scaleX: 0 });
+  }, []);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -25,7 +36,12 @@ export const Preloader = ({ onComplete }) => {
 
       const tl = gsap.timeline({
         onComplete: () => {
-          if (onComplete) onComplete();
+          // flushSync forces React to commit the isLoaded state update in the
+          // same RAF frame as this callback, preventing a 1–2 frame gap where
+          // the bars are gone but the hero is still visibility:hidden.
+          flushSync(() => {
+            if (onComplete) onComplete();
+          });
         }
       });
 

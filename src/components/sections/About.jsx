@@ -131,24 +131,34 @@ export const About = () => {
         }
       );
 
-      // Word-by-word cinematic reveal
-      wordsRef.current.filter(Boolean).forEach((word, i) => {
-        gsap.fromTo(word,
-          { opacity: 0.08, y: 8, filter: 'blur(4px)' },
-          {
-            opacity: 1,
-            y: 0,
-            filter: 'blur(0px)',
-            color: 'var(--text-primary)',
-            duration: 0.6,
-            scrollTrigger: {
-              trigger: containerRef.current,
-              start: `top+=${i * 12} 60%`,
-              end: `top+=${i * 12 + 60} 60%`,
-              scrub: 1,
-            }
+      // Word-by-word cinematic reveal — driven by ONE ScrollTrigger instead of
+      // 47 individual instances. Identical visual: words reveal in staggered
+      // sequence as you scroll. One scrub instead of 47 eliminates the per-word
+      // update overhead that caused main-thread saturation on mobile.
+      const wordsArray = wordsRef.current.filter(Boolean);
+      const wordCount = wordsArray.length;
+      const totalRange = wordCount * 12 + 60;
+
+      gsap.set(wordsArray, { opacity: 0.08, y: 8, filter: 'blur(4px)' });
+
+      ScrollTrigger.create({
+        trigger: containerRef.current,
+        start: 'top 60%',
+        end: `top+=${totalRange} 60%`,
+        scrub: 1,
+        onUpdate(self) {
+          const p = self.progress;
+          for (let i = 0; i < wordCount; i++) {
+            const word = wordsArray[i];
+            const wStart = (i * 12) / totalRange;
+            const wEnd   = (i * 12 + 60) / totalRange;
+            const wp = Math.max(0, Math.min(1, (p - wStart) / (wEnd - wStart)));
+            word.style.opacity   = (0.08 + wp * 0.92).toFixed(3);
+            word.style.transform = `translateY(${(8 * (1 - wp)).toFixed(2)}px)`;
+            word.style.filter    = `blur(${(4 * (1 - wp)).toFixed(2)}px)`;
+            word.style.color     = wp > 0.5 ? 'var(--text-primary)' : '';
           }
-        );
+        },
       });
     }, containerRef);
 
