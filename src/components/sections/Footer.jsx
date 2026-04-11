@@ -176,8 +176,8 @@ export const Footer = () => {
           <MagneticLink href="mailto:debarshi@outlook.com">
             <span ref={el => linksRef.current[0] = el}>debarshi@outlook.com</span>
           </MagneticLink>
-          <MagneticLink href="tel:+919199360412">
-            <span ref={el => linksRef.current[1] = el}>+91 91993 60412</span>
+          <MagneticLink href="tel:+919933604124">
+            <span ref={el => linksRef.current[1] = el}>+91 99336 04124</span>
           </MagneticLink>
           <MagneticLink href="https://www.linkedin.com/in/debarshi-sau-737932291/" target="_blank" rel="noopener noreferrer">
             <span ref={el => linksRef.current[2] = el}>LinkedIn</span>
