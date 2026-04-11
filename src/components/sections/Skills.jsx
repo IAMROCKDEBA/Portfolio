@@ -23,22 +23,35 @@ const VelocityMarquee = ({ items, baseSpeed = 1, direction = 1, reverseColor = f
     const trackWidth = track.scrollWidth / 2;
     let velocity = 0;
 
-    const animate = () => {
+    let lastTime = null;
+
+    const animate = (time) => {
+      if (lastTime === null) lastTime = time;
+      const dt = time - lastTime;
+      lastTime = time;
+
       const scrollVelocity = lenis ? Math.abs(lenis.velocity) : 0;
       const speedMultiplier = 1 + scrollVelocity * 0.1;
 
       const skewTarget = lenis ? lenis.velocity * 0.4 : 0;
       velocity += (skewTarget - velocity) * 0.1;
 
-      xRef.current += baseSpeed * direction * speedMultiplier;
+      const timeScale = dt ? dt / 16.666 : 1;
+      
+      // Initialize xRef appropriately on first frame if reversing
+      if (direction === -1 && xRef.current === 0) {
+          xRef.current = trackWidth;
+      }
+
+      xRef.current += baseSpeed * direction * speedMultiplier * timeScale;
 
       if (direction === 1 && xRef.current >= trackWidth) {
         xRef.current -= trackWidth;
-      } else if (direction === -1 && Math.abs(xRef.current) >= trackWidth) {
+      } else if (direction === -1 && xRef.current <= 0) {
         xRef.current += trackWidth;
       }
 
-      track.style.transform = `translateX(${-xRef.current}px) skewX(${velocity}deg)`;
+      track.style.transform = `translate3d(${-xRef.current}px, 0, 0) skewX(${velocity}deg)`;
       animRef.current = requestAnimationFrame(animate);
     };
 
@@ -87,21 +100,6 @@ export const Skills = () => {
           }
         }
       );
-
-      // Watermark parallax
-      gsap.fromTo(watermarkRef.current,
-        { x: 200 },
-        {
-          x: -200,
-          ease: 'none',
-          scrollTrigger: {
-            trigger: sectionRef.current,
-            start: 'top bottom',
-            end: 'bottom top',
-            scrub: 1,
-          }
-        }
-      );
     }, sectionRef);
 
     return () => ctx.revert();
@@ -109,9 +107,6 @@ export const Skills = () => {
 
   return (
     <section className={styles.skills} ref={sectionRef} id="skills">
-      {/* Background watermark */}
-      <div className={styles.watermark} ref={watermarkRef}>SKILLS</div>
-
       <div className={styles.headingRow} ref={headingRef}>
         <span className="section-label">
           <span>Tech Stack</span>

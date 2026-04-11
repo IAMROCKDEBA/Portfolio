@@ -5,24 +5,6 @@
   z-index: var(--z-content);
 }
 
-/* ── Watermark ── */
-.watermark {
-  position: absolute;
-  top: 50%;
-  right: -5%;
-  transform: translateY(-50%);
-  font-family: var(--font-display);
-  font-size: clamp(10rem, 22vw, 28rem);
-  font-weight: 800;
-  color: transparent;
-  -webkit-text-stroke: 1px rgba(255, 255, 255, 0.015);
-  pointer-events: none;
-  user-select: none;
-  z-index: 0;
-  white-space: nowrap;
-  will-change: transform;
-}
-
 .headingRow {
   max-width: 1400px;
   margin: 0 auto;
@@ -140,11 +122,6 @@
 }
 
 @media (max-width: 768px) {
-  .watermark {
-    font-size: clamp(5rem, 15vw, 10rem);
-    right: 0;
-  }
-
   .skillItem {
     font-size: clamp(2.5rem, 8vw, 5rem);
   }
@@ -161,10 +138,6 @@
 @media (max-width: 480px) {
   .skills {
     padding: var(--spacing-xl) 0;
-  }
-
-  .watermark {
-    display: none;
   }
 
   .skillItem {
