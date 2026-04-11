@@ -69,7 +69,6 @@ html {
   scrollbar-width: none;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  will-change: scroll-position;
 }
 
 html::-webkit-scrollbar {

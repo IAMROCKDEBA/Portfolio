@@ -154,6 +154,7 @@ const AuroraPlane = () => {
   const mouseRef = useRef({ x: 0.5, y: 0.5 });
   const scrollVelRef = useRef(0);
   const lastScrollRef = useRef(0);
+  const maxScrollRef = useRef(Math.max(1, document.documentElement.scrollHeight - window.innerHeight));
 
   const uniforms = useMemo(() => ({
     uTime: { value: 0 },
@@ -173,6 +174,7 @@ const AuroraPlane = () => {
 
     const handleResize = () => {
       uniforms.uResolution.value.set(window.innerWidth, window.innerHeight);
+      maxScrollRef.current = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
     };
     window.addEventListener('resize', handleResize);
 
@@ -197,9 +199,9 @@ const AuroraPlane = () => {
     if (meshRef.current) {
       uniforms.uTime.value = state.clock.elapsedTime;
 
-      // Update scroll uniform in the render loop so it's always frame-accurate
-      const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
-      uniforms.uScroll.value = maxScroll > 0 ? lastScrollRef.current / maxScroll : 0;
+      // Update scroll uniform in the render loop so it's always frame-accurate.
+      // maxScrollRef is pre-cached and updated only on resize — no per-frame layout read.
+      uniforms.uScroll.value = lastScrollRef.current / maxScrollRef.current;
 
       uniforms.uMouse.value.x += (mouseRef.current.x - uniforms.uMouse.value.x) * 0.04;
       uniforms.uMouse.value.y += (mouseRef.current.y - uniforms.uMouse.value.y) * 0.04;
