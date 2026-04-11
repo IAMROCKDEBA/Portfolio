@@ -64,7 +64,7 @@ export const About = () => {
   const labelRef = useRef(null);
   const decorLineRef = useRef(null);
   const watermarkRef = useRef(null);
-  const leftArtRef = useRef(null);
+  const imageRef = useRef(null);
 
   const text = "Results-driven B.Tech Computer Science & Engineering student at Adamas University. Proficient in Python, C++, and JavaScript with a strong foundation in modern software architecture. Passionate about solving real-world problems and building high-performance production-ready systems.";
   const words = text.split(' ');
@@ -118,31 +118,18 @@ export const About = () => {
         }
       );
 
-      // Left art animation — morphing gradient shape
-      gsap.fromTo(leftArtRef.current,
-        { scale: 0.6, opacity: 0, rotation: -10 },
+      // Left profile image animation
+      gsap.fromTo(imageRef.current,
+        { scale: 0.8, opacity: 0, y: 30 },
         {
-          scale: 1, opacity: 1, rotation: 0,
-          duration: 1.5, ease: 'power3.out',
+          scale: 1, opacity: 1, y: 0,
+          duration: 1.2, ease: 'power3.out',
           scrollTrigger: {
             trigger: containerRef.current,
             start: 'top 75%',
           }
         }
       );
-
-      // Morphing animation on scroll
-      gsap.to(leftArtRef.current, {
-        rotation: 5,
-        borderRadius: '40% 60% 55% 45% / 55% 40% 60% 45%',
-        ease: 'none',
-        scrollTrigger: {
-          trigger: containerRef.current,
-          start: 'top bottom',
-          end: 'bottom top',
-          scrub: 2,
-        }
-      });
 
       // Word-by-word cinematic reveal
       wordsRef.current.filter(Boolean).forEach((word, i) => {
@@ -175,14 +162,10 @@ export const About = () => {
 
       <div className={styles.inner}>
         <div className={styles.splitLayout}>
-          {/* Left: Abstract art */}
+          {/* Left: Profile Picture */}
           <div className={styles.leftColumn}>
-            <div className={styles.artContainer}>
-              <div className={styles.artShape} ref={leftArtRef}>
-                <div className={styles.artInner}></div>
-                <div className={styles.artRing}></div>
-                <div className={styles.artRing2}></div>
-              </div>
+            <div className={styles.imageContainer} ref={imageRef}>
+              <img src="/image.jpg" alt="Profile" className={styles.profileImage} />
             </div>
           </div>
 
