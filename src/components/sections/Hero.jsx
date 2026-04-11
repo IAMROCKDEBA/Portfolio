@@ -156,21 +156,28 @@ const AetherFlowCanvas = ({ isLoaded }) => {
 
 export const Hero = ({ isLoaded }) => {
     const fadeUpVariants = {
-        hidden: { opacity: 0, y: 30 },
+        hidden: { opacity: 0, y: 40 },
         visible: (i) => ({
             opacity: 1,
             y: 0,
             transition: {
-                delay: i * 0.15 + 0.8, // Wait for preloader to finish
-                duration: 1.2,
-                ease: [0.16, 1, 0.3, 1], // Buttery smooth expo-out
+                delay: i * 0.2 + 0.5, // Calm delay
+                duration: 1.6, // Longer duration for gradual visual intake
+                ease: [0.25, 0.1, 0.25, 1.0], // Cinematic ease-in-out curve
             },
         }),
     };
 
     return (
         <section className={styles.hero} id="hero">
-            <AetherFlowCanvas isLoaded={isLoaded} />
+            <motion.div
+                initial={{ opacity: 0 }}
+                animate={isLoaded ? { opacity: 1 } : { opacity: 0 }}
+                transition={{ duration: 3, ease: 'easeInOut' }}
+                style={{ position: 'absolute', inset: 0, zIndex: 0, pointerEvents: 'none' }}
+            >
+                <AetherFlowCanvas isLoaded={isLoaded} />
+            </motion.div>
             
             <div className={styles.content}>
                 <motion.div
