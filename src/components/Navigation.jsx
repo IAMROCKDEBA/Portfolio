@@ -112,8 +112,12 @@ export const Navigation = ({ isVisible }) => {
 
   const scrollTo = (id) => {
     const el = document.getElementById(id);
-    if (el && lenis) {
+    if (!el) return;
+    
+    if (lenis) {
       lenis.scrollTo(el, { offset: 0, duration: 2 });
+    } else {
+      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
   };
 
