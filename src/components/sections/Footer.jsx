@@ -1,7 +1,8 @@
 import React, { useRef, useEffect } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { ArrowUpRight } from 'lucide-react';
+import { ArrowUpRight, ArrowUp } from 'lucide-react';
+import { useSmoothScroll } from '../../context/SmoothScroll';
 import styles from './Footer.module.css';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -56,6 +57,9 @@ export const Footer = () => {
   const lineRef = useRef(null);
   const linksRef = useRef([]);
   const bottomRef = useRef(null);
+  const ctaLinkRef = useRef(null);
+  const backTopRef = useRef(null);
+  const lenis = useSmoothScroll();
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -70,6 +74,22 @@ export const Footer = () => {
           }
         }
       );
+
+      // Magnetic CTA link effect
+      if (ctaLinkRef.current) {
+        const el = ctaLinkRef.current;
+        const handleMouseMove = (e) => {
+          const rect = el.getBoundingClientRect();
+          const x = e.clientX - (rect.left + rect.width / 2);
+          const y = e.clientY - (rect.top + rect.height / 2);
+          gsap.to(el, { x: x * 0.2, y: y * 0.2, duration: 0.6, ease: 'power3.out' });
+        };
+        const handleMouseLeave = () => {
+          gsap.to(el, { x: 0, y: 0, duration: 0.6, ease: 'power3.out' });
+        };
+        el.addEventListener('mousemove', handleMouseMove);
+        el.addEventListener('mouseleave', handleMouseLeave);
+      }
 
       // Animated separator line
       gsap.fromTo(lineRef.current,
@@ -107,10 +127,28 @@ export const Footer = () => {
           }
         }
       );
+
+      // Back to top button
+      gsap.fromTo(backTopRef.current,
+        { scale: 0, opacity: 0 },
+        {
+          scale: 1, opacity: 1, duration: 0.6, ease: 'elastic.out(1, 0.5)',
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: 'top 60%',
+          }
+        }
+      );
     }, sectionRef);
 
     return () => ctx.revert();
   }, []);
+
+  const scrollToTop = () => {
+    if (lenis) {
+      lenis.scrollTo(0, { duration: 3 });
+    }
+  };
 
   return (
     <footer className={styles.footer} ref={sectionRef} id="contact">
@@ -119,7 +157,7 @@ export const Footer = () => {
         <span className={styles.ctaSmall}>Have a project in mind?</span>
         <div className={styles.ctaGiant}>
           <span>LET'S</span>
-          <a href="mailto:debarshi@outlook.com" className={styles.ctaLink} data-cursor="hover">
+          <a href="mailto:debarshi@outlook.com" className={styles.ctaLink} ref={ctaLinkRef} data-cursor="hover">
             <span className={styles.ctaLinkInner}>TALK</span>
             <ArrowUpRight size={64} strokeWidth={2.5} className={styles.ctaArrow} />
           </a>
@@ -129,7 +167,7 @@ export const Footer = () => {
       {/* Separator */}
       <div className={styles.separator} ref={lineRef}></div>
 
-      {/* Contact info only */}
+      {/* Contact info */}
       <div className={styles.contactArea}>
         <h4 className={styles.colTitle}>Get in Touch</h4>
         <div className={styles.contactGrid}>
@@ -147,6 +185,12 @@ export const Footer = () => {
           </MagneticLink>
         </div>
       </div>
+
+      {/* Back to top */}
+      <button className={styles.backToTop} ref={backTopRef} onClick={scrollToTop} data-cursor="hover">
+        <ArrowUp size={20} />
+        <span>Back to top</span>
+      </button>
 
       {/* Bottom bar */}
       <div className={styles.bottomBar} ref={bottomRef}>

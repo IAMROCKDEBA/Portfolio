@@ -32,6 +32,7 @@
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 1.5rem;
+  perspective: 1000px;
 }
 
 /* ── Card ── */
@@ -43,20 +44,48 @@
   border: 1px solid rgba(255, 255, 255, 0.05);
   overflow: hidden;
   transition: border-color 0.5s var(--ease-out-expo),
-              box-shadow 0.5s ease,
-              transform 0.5s var(--ease-out-expo);
+              box-shadow 0.5s ease;
   will-change: transform, opacity;
   display: flex;
   flex-direction: column;
   gap: 1rem;
   cursor: pointer;
+  transform-style: preserve-3d;
+  transform: perspective(800px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
 }
 
 .card:hover {
   border-color: var(--card-accent, var(--accent-violet));
   box-shadow: 0 8px 40px rgba(0, 0, 0, 0.3),
-              0 0 0 1px var(--card-accent, var(--accent-violet));
-  transform: translateY(-4px);
+              0 0 0 1px var(--card-accent, var(--accent-violet)),
+              0 0 30px color-mix(in srgb, var(--card-accent, #8a5cf5) 15%, transparent);
+}
+
+/* ── Holographic Shimmer ── */
+.holoShimmer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 2;
+  background: linear-gradient(
+    120deg,
+    transparent 0%,
+    rgba(255, 0, 128, 0.04) 20%,
+    rgba(0, 229, 255, 0.06) 35%,
+    rgba(138, 92, 245, 0.06) 50%,
+    rgba(251, 191, 36, 0.04) 65%,
+    rgba(255, 45, 117, 0.04) 80%,
+    transparent 100%
+  );
+  background-size: 250% 250%;
+  background-position: var(--shimmer-x, 50%) var(--shimmer-y, 50%);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  mix-blend-mode: overlay;
+}
+
+.card:hover .holoShimmer {
+  opacity: 1;
 }
 
 /* ── Spotlight ── */
@@ -66,7 +95,7 @@
   pointer-events: none;
   background: radial-gradient(
     400px circle at var(--cx, 50%) var(--cy, 50%),
-    color-mix(in srgb, var(--card-accent, #8a5cf5) 8%, transparent) 0%,
+    color-mix(in srgb, var(--card-accent, #8a5cf5) 10%, transparent) 0%,
     transparent 50%
   );
   opacity: 0;
@@ -78,13 +107,65 @@
   opacity: 1;
 }
 
+/* ── Glow Border ── */
+.glowBorder {
+  position: absolute;
+  inset: -1px;
+  border-radius: 1.25rem;
+  pointer-events: none;
+  z-index: -1;
+  background: conic-gradient(
+    from 0deg,
+    transparent,
+    var(--card-accent, var(--accent-violet)),
+    transparent,
+    var(--card-accent, var(--accent-violet)),
+    transparent
+  );
+  opacity: 0;
+  filter: blur(4px);
+  transition: opacity 0.5s ease;
+}
+
+.card:hover .glowBorder {
+  opacity: 0.3;
+  animation: rotateBorder 4s linear infinite;
+}
+
+@keyframes rotateBorder {
+  from { filter: blur(4px) hue-rotate(0deg); }
+  to { filter: blur(4px) hue-rotate(360deg); }
+}
+
+/* ── Floating Badge ── */
+.floatingBadge {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  font-size: 1.5rem;
+  opacity: 0.15;
+  transition: all 0.5s var(--ease-out-expo);
+  z-index: 3;
+  animation: badgeFloat 3s ease-in-out infinite;
+}
+
+@keyframes badgeFloat {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-5px) rotate(5deg); }
+}
+
+.card:hover .floatingBadge {
+  opacity: 0.6;
+  transform: scale(1.2);
+}
+
 /* ── Card Top ── */
 .cardTop {
   display: flex;
   align-items: center;
   justify-content: space-between;
   position: relative;
-  z-index: 1;
+  z-index: 3;
 }
 
 .iconWrap {
@@ -97,12 +178,13 @@
   background: color-mix(in srgb, var(--card-accent, #8a5cf5) 12%, transparent);
   border: 1px solid color-mix(in srgb, var(--card-accent, #8a5cf5) 20%, transparent);
   color: var(--card-accent, var(--accent-violet));
-  transition: background 0.3s ease, transform 0.3s ease;
+  transition: all 0.4s var(--ease-out-expo);
 }
 
 .card:hover .iconWrap {
-  background: color-mix(in srgb, var(--card-accent, #8a5cf5) 20%, transparent);
-  transform: scale(1.05);
+  background: color-mix(in srgb, var(--card-accent, #8a5cf5) 22%, transparent);
+  transform: scale(1.08) rotate(-3deg);
+  box-shadow: 0 0 20px color-mix(in srgb, var(--card-accent, #8a5cf5) 20%, transparent);
 }
 
 .issuer {
@@ -116,6 +198,8 @@
   border: 1px solid rgba(255, 255, 255, 0.06);
   border-radius: 100px;
   background: rgba(255, 255, 255, 0.03);
+  position: relative;
+  z-index: 3;
 }
 
 /* ── Content ── */
@@ -127,7 +211,7 @@
   line-height: 1.2;
   letter-spacing: -0.02em;
   position: relative;
-  z-index: 1;
+  z-index: 3;
 }
 
 .certDesc {
@@ -135,33 +219,96 @@
   line-height: 1.6;
   color: var(--text-secondary);
   position: relative;
-  z-index: 1;
+  z-index: 3;
 }
 
 /* ── Accent Line ── */
 .accentLine {
   height: 2px;
   width: 0;
-  background: var(--card-accent, var(--accent-violet));
+  background: linear-gradient(90deg, var(--card-accent, var(--accent-violet)), transparent);
   border-radius: 2px;
   margin-top: auto;
   transition: width 0.6s var(--ease-out-expo);
   position: relative;
-  z-index: 1;
+  z-index: 3;
 }
 
 .card:hover .accentLine {
   width: 100%;
+  box-shadow: 0 0 10px color-mix(in srgb, var(--card-accent, #8a5cf5) 30%, transparent);
 }
 
 /* ── Responsive ── */
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
   .grid {
     grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .header {
+    margin-bottom: 2.5rem;
+  }
+
+  .title {
+    font-size: clamp(2rem, 8vw, 4rem);
+  }
+
+  .grid {
     gap: 1rem;
   }
 
   .card {
     padding: 1.5rem;
+  }
+
+  .certTitle {
+    font-size: clamp(1.2rem, 4vw, 1.5rem);
+  }
+
+  .certDesc {
+    font-size: 0.85rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .section {
+    padding: var(--spacing-xl) 0;
+  }
+
+  .header {
+    margin-bottom: 2rem;
+  }
+
+  .card {
+    padding: 1.25rem;
+  }
+
+  .floatingBadge {
+    font-size: 1.2rem;
+    top: 0.75rem;
+    right: 0.75rem;
+  }
+
+  .iconWrap {
+    width: 36px;
+    height: 36px;
+  }
+
+  .issuer {
+    font-size: 0.65rem;
+    padding: 0.25rem 0.6rem;
+  }
+
+  .certTitle {
+    font-size: 1.1rem;
+    margin-top: 0.5rem;
+  }
+
+  .certDesc {
+    font-size: 0.8rem;
+    line-height: 1.5;
   }
 }

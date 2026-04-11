@@ -1,0 +1,64 @@
+.divider {
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 2rem var(--spacing-lg);
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: var(--z-content);
+}
+
+.line {
+  width: 100%;
+  height: 1px;
+  transform-origin: left center;
+  position: relative;
+}
+
+.line.gradient {
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    var(--accent-violet) 20%,
+    var(--accent-cyan) 50%,
+    var(--accent-rose) 80%,
+    transparent 100%
+  );
+  opacity: 0.3;
+}
+
+.lineGlow {
+  position: absolute;
+  inset: -4px 0;
+  background: inherit;
+  filter: blur(8px);
+  opacity: 0.4;
+}
+
+/* Center orb */
+.orb {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--accent-violet);
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.orbInner {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 1px solid rgba(138, 92, 245, 0.3);
+  animation: orbPulse 2.5s ease-in-out infinite;
+}
+
+@keyframes orbPulse {
+  0%, 100% { transform: scale(1); opacity: 0.5; }
+  50% { transform: scale(1.8); opacity: 0; }
+}

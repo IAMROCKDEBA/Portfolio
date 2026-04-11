@@ -6,43 +6,156 @@
   padding: var(--spacing-section) var(--spacing-lg);
   position: relative;
   z-index: var(--z-content);
+  overflow: hidden;
+}
+
+/* ── Background watermark ── */
+.watermark {
+  position: absolute;
+  top: 50%;
+  left: -5%;
+  transform: translateY(-50%);
+  font-family: var(--font-display);
+  font-size: clamp(10rem, 22vw, 28rem);
+  font-weight: 800;
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(255, 255, 255, 0.015);
+  pointer-events: none;
+  user-select: none;
+  z-index: 0;
+  white-space: nowrap;
+  will-change: transform;
 }
 
 .inner {
-  max-width: 1000px;
+  max-width: 1200px;
   width: 100%;
+  position: relative;
+  z-index: 1;
+}
+
+/* ── Split Layout ── */
+.splitLayout {
+  display: grid;
+  grid-template-columns: 1fr 1.4fr;
+  gap: 4rem;
+  align-items: center;
+}
+
+/* ── Left Art Column ── */
+.leftColumn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.artContainer {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1;
+  max-width: 350px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.artShape {
+  width: 80%;
+  height: 80%;
+  border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+  background: linear-gradient(135deg,
+    rgba(138, 92, 245, 0.2) 0%,
+    rgba(0, 229, 255, 0.12) 40%,
+    rgba(255, 45, 117, 0.1) 70%,
+    rgba(251, 191, 36, 0.08) 100%
+  );
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  will-change: transform;
+  animation: morphShape 12s ease-in-out infinite;
+}
+
+@keyframes morphShape {
+  0% { border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%; }
+  25% { border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; }
+  50% { border-radius: 40% 60% 60% 40% / 50% 60% 40% 50%; }
+  75% { border-radius: 70% 30% 50% 50% / 40% 70% 30% 60%; }
+  100% { border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%; }
+}
+
+.artInner {
+  width: 60%;
+  height: 60%;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(138, 92, 245, 0.25) 0%, transparent 70%);
+  animation: artPulse 4s ease-in-out infinite;
+}
+
+@keyframes artPulse {
+  0%, 100% { transform: scale(1); opacity: 0.6; }
+  50% { transform: scale(1.2); opacity: 1; }
+}
+
+.artRing {
+  position: absolute;
+  width: 110%;
+  height: 110%;
+  border-radius: 50%;
+  border: 1px solid rgba(138, 92, 245, 0.1);
+  animation: ringRotate 20s linear infinite;
+}
+
+.artRing2 {
+  position: absolute;
+  width: 130%;
+  height: 130%;
+  border-radius: 50%;
+  border: 1px dashed rgba(0, 229, 255, 0.06);
+  animation: ringRotate 30s linear infinite reverse;
+}
+
+@keyframes ringRotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* ── Right Content Column ── */
+.rightColumn {
+  position: relative;
 }
 
 .decorLine {
   width: 100%;
   height: 1px;
-  background: linear-gradient(90deg, var(--accent-violet), transparent);
-  margin-bottom: 3rem;
+  background: linear-gradient(90deg, var(--accent-violet), rgba(0, 229, 255, 0.3), transparent);
+  margin-bottom: 2.5rem;
   transform-origin: left center;
 }
 
 .text {
-  font-size: clamp(1.8rem, 4.5vw, 3.5rem);
+  font-size: clamp(1.5rem, 3.5vw, 2.8rem);
   font-family: var(--font-display);
   font-weight: 500;
-  line-height: 1.35;
+  line-height: 1.4;
   color: var(--text-tertiary);
 }
 
 .word {
   display: inline-block;
   margin-right: 0.3em;
-  will-change: transform, opacity;
+  will-change: transform, opacity, filter;
   transition: color 0.3s ease;
 }
 
 /* ── Stats ── */
 .stats {
   display: flex;
-  gap: 4rem;
-  margin-top: 4rem;
-  padding-top: 3rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  gap: 3rem;
+  margin-top: 3.5rem;
+  padding-top: 2.5rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
   flex-wrap: wrap;
 }
 
@@ -50,6 +163,7 @@
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
+  will-change: transform, opacity;
 }
 
 .statNumber {
@@ -65,14 +179,104 @@
 
 .statLabel {
   font-family: var(--font-heading);
-  font-size: 0.85rem;
+  font-size: 0.8rem;
   font-weight: 400;
   letter-spacing: 0.05em;
   color: var(--text-secondary);
 }
 
+@media (max-width: 900px) {
+  .splitLayout {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .leftColumn {
+    order: -1;
+  }
+
+  .artContainer {
+    max-width: 220px;
+  }
+
+  .text {
+    font-size: clamp(1.3rem, 3.5vw, 2.2rem);
+  }
+}
+
 @media (max-width: 768px) {
+  .about {
+    padding: var(--spacing-section) var(--spacing-md);
+  }
+
+  .watermark {
+    font-size: clamp(6rem, 18vw, 14rem);
+    -webkit-text-stroke-width: 0.5px;
+  }
+
+  .text {
+    font-size: clamp(1.15rem, 4.5vw, 1.8rem);
+    line-height: 1.45;
+  }
+
   .stats {
     gap: 2rem;
+    margin-top: 2.5rem;
+    padding-top: 2rem;
+  }
+
+  .statNumber {
+    font-size: clamp(1.6rem, 6vw, 2.5rem);
+  }
+
+  .statLabel {
+    font-size: 0.72rem;
+  }
+
+  .artContainer {
+    max-width: 180px;
+  }
+
+  .artShape {
+    width: 85%;
+    height: 85%;
+  }
+}
+
+@media (max-width: 480px) {
+  .about {
+    padding: var(--spacing-xl) var(--spacing-md);
+    min-height: auto;
+  }
+
+  .watermark {
+    font-size: 5rem;
+    display: none;
+  }
+
+  .text {
+    font-size: clamp(1rem, 4.2vw, 1.4rem);
+  }
+
+  .stats {
+    gap: 1.5rem;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+
+  .statNumber {
+    font-size: clamp(1.4rem, 5.5vw, 2rem);
+  }
+
+  .statLabel {
+    font-size: 0.65rem;
+  }
+
+  .artContainer {
+    max-width: 150px;
+  }
+
+  .decorLine {
+    margin-bottom: 1.5rem;
   }
 }

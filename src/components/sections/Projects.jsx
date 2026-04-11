@@ -35,16 +35,12 @@ const projects = [
 
 export const Projects = () => {
   const wrapperRef = useRef(null);
-  const containerRef = useRef(null);
-  const cardsRef = useRef([]);
   const headerRef = useRef(null);
+  const cardsRef = useRef([]);
   const progressRef = useRef(null);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      const container = containerRef.current;
-      const totalWidth = container.scrollWidth - window.innerWidth;
-
       // Header animation
       gsap.fromTo(headerRef.current,
         { y: 80, opacity: 0 },
@@ -57,19 +53,49 @@ export const Projects = () => {
         }
       );
 
-      // Horizontal scroll
-      const scrollTween = gsap.to(container, {
-        x: -totalWidth,
-        ease: 'none',
-        scrollTrigger: {
-          trigger: wrapperRef.current,
-          start: 'top top',
-          end: () => `+=${totalWidth}`,
-          scrub: 1,
-          pin: true,
-          anticipatePin: 1,
-          invalidateOnRefresh: true,
-        },
+      // Stacking cards — each card pins and the next one stacks on top
+      const cards = cardsRef.current.filter(Boolean);
+
+      cards.forEach((card, i) => {
+        const isLast = i === cards.length - 1;
+
+        // Scale down slightly as subsequent cards stack
+        if (!isLast) {
+          gsap.to(card, {
+            scale: 0.92 - i * 0.02,
+            opacity: 0.6,
+            filter: 'blur(3px)',
+            ease: 'none',
+            scrollTrigger: {
+              trigger: cards[i + 1],
+              start: 'top bottom',
+              end: 'top 20%',
+              scrub: 1,
+            }
+          });
+        }
+
+        // Reveal animation for each card
+        const content = card.querySelector('[data-content]');
+        const num = card.querySelector('[data-num]');
+        const title = card.querySelector('[data-title]');
+        const desc = card.querySelector('[data-desc]');
+        const techEls = card.querySelectorAll('[data-tech]');
+        const cta = card.querySelector('[data-cta]');
+
+        const tl = gsap.timeline({
+          scrollTrigger: {
+            trigger: card,
+            start: 'top 70%',
+            toggleActions: 'play none none reverse',
+          }
+        });
+
+        if (num) tl.fromTo(num, { y: 60, opacity: 0, scale: 0.8 }, { y: 0, opacity: 1, scale: 1, duration: 0.8, ease: 'power3.out' }, 0);
+        if (title) tl.fromTo(title, { y: 40, opacity: 0, filter: 'blur(8px)' }, { y: 0, opacity: 1, filter: 'blur(0px)', duration: 0.8, ease: 'power3.out' }, 0.1);
+        if (desc) tl.fromTo(desc, { y: 30, opacity: 0 }, { y: 0, opacity: 1, duration: 0.7, ease: 'power3.out' }, 0.25);
+        if (techEls.length) tl.fromTo(techEls, { y: 20, opacity: 0, scale: 0.9 }, { y: 0, opacity: 1, scale: 1, duration: 0.5, ease: 'power3.out', stagger: 0.05 }, 0.35);
+        if (cta) tl.fromTo(cta, { y: 20, opacity: 0 }, { y: 0, opacity: 1, duration: 0.5, ease: 'power3.out' }, 0.5);
       });
 
       // Progress bar
@@ -79,28 +105,9 @@ export const Projects = () => {
         scrollTrigger: {
           trigger: wrapperRef.current,
           start: 'top top',
-          end: () => `+=${totalWidth}`,
+          end: 'bottom bottom',
           scrub: 1,
         },
-      });
-
-      // Per-card reveal animations (within horizontal scroll)
-      cardsRef.current.filter(Boolean).forEach((card, i) => {
-        gsap.fromTo(card,
-          { opacity: 0, y: 60 },
-          {
-            opacity: 1,
-            y: 0,
-            duration: 1,
-            ease: 'power3.out',
-            scrollTrigger: {
-              trigger: card,
-              containerAnimation: scrollTween,
-              start: 'left 80%',
-              toggleActions: 'play none none reverse',
-            }
-          }
-        );
       });
     }, wrapperRef);
 
@@ -130,43 +137,41 @@ export const Projects = () => {
             <span className={styles.titleStroke}>Featured</span> Projects
           </h2>
         </div>
-        {/* Horizontal progress */}
+        {/* Progress */}
         <div className={styles.progressTrack}>
           <div className={styles.progressFill} ref={progressRef}></div>
         </div>
       </div>
 
-      {/* Horizontal scroll container */}
-      <div className={styles.scrollContainer} ref={containerRef}>
+      {/* Stacking cards */}
+      <div className={styles.cardsContainer}>
         {projects.map((proj, idx) => (
           <div
             key={idx}
-            className={styles.panel}
+            className={styles.cardWrapper}
+            ref={el => cardsRef.current[idx] = el}
+            onMouseMove={(e) => handleMouseMove(e, idx)}
+            style={{ '--accent': proj.color }}
           >
-            <div
-              className={styles.card}
-              ref={el => cardsRef.current[idx] = el}
-              onMouseMove={(e) => handleMouseMove(e, idx)}
-              style={{ '--accent': proj.color }}
-            >
+            <div className={styles.card}>
               {/* Large project number */}
-              <div className={styles.projectNum}>{proj.num}</div>
+              <div className={styles.projectNum} data-num>{proj.num}</div>
 
-              <div className={styles.cardContent}>
+              <div className={styles.cardContent} data-content>
                 <div className={styles.cardTop}>
-                  <span className={styles.category}>{proj.category}</span>
+                  <span className={styles.category} data-tech>{proj.category}</span>
                   <div className={styles.techStack}>
                     {proj.tech.map((t, i) => (
-                      <span key={i} className={styles.techBadge}>{t}</span>
+                      <span key={i} className={styles.techBadge} data-tech>{t}</span>
                     ))}
                   </div>
                 </div>
 
-                <h3 className={styles.projectTitle}>{proj.title}</h3>
+                <h3 className={styles.projectTitle} data-title>{proj.title}</h3>
 
-                <p className={styles.projectDesc}>{proj.description}</p>
+                <p className={styles.projectDesc} data-desc>{proj.description}</p>
 
-                <div className={styles.cardFooter} data-cursor="hover">
+                <div className={styles.cardFooter} data-cta data-cursor="hover">
                   <span className={styles.viewProject}>View Project</span>
                   <ArrowUpRight size={18} />
                 </div>

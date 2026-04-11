@@ -5,17 +5,95 @@ import styles from './About.module.css';
 
 gsap.registerPlugin(ScrollTrigger);
 
+// ── Animated Counter ──
+const AnimatedStat = ({ value, label, suffix = '', index }) => {
+  const numRef = useRef(null);
+  const containerRef = useRef(null);
+
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      // Parse numeric value
+      const numericVal = parseFloat(value);
+
+      if (!isNaN(numericVal)) {
+        const counter = { val: 0 };
+        gsap.to(counter, {
+          val: numericVal,
+          duration: 2,
+          ease: 'power2.out',
+          delay: index * 0.2,
+          scrollTrigger: {
+            trigger: containerRef.current,
+            start: 'top 80%',
+          },
+          onUpdate: () => {
+            if (numRef.current) {
+              numRef.current.textContent = Math.floor(counter.val) + suffix;
+            }
+          }
+        });
+      }
+
+      gsap.fromTo(containerRef.current,
+        { y: 40, opacity: 0 },
+        {
+          y: 0, opacity: 1, duration: 0.8, ease: 'power3.out',
+          delay: 0.2 + index * 0.15,
+          scrollTrigger: {
+            trigger: containerRef.current,
+            start: 'top 85%',
+          }
+        }
+      );
+    }, containerRef);
+
+    return () => ctx.revert();
+  }, [value, suffix, index]);
+
+  return (
+    <div className={styles.stat} ref={containerRef}>
+      <span className={styles.statNumber} ref={numRef}>{value === '∞' ? '∞' : '0' + suffix}</span>
+      <span className={styles.statLabel}>{label}</span>
+    </div>
+  );
+};
+
 export const About = () => {
   const containerRef = useRef(null);
   const wordsRef = useRef([]);
   const labelRef = useRef(null);
   const decorLineRef = useRef(null);
+  const watermarkRef = useRef(null);
+  const leftArtRef = useRef(null);
 
   const text = "Results-driven B.Tech Computer Science & Engineering student at Adamas University. Proficient in Python, C++, and JavaScript with a strong foundation in modern software architecture. Passionate about solving real-world problems and building high-performance production-ready systems.";
   const words = text.split(' ');
 
   useEffect(() => {
     const ctx = gsap.context(() => {
+      // Watermark parallax
+      gsap.fromTo(watermarkRef.current,
+        { x: -200, opacity: 0 },
+        {
+          x: 0, opacity: 1, duration: 1.5, ease: 'power3.out',
+          scrollTrigger: {
+            trigger: containerRef.current,
+            start: 'top 80%',
+          }
+        }
+      );
+
+      gsap.to(watermarkRef.current, {
+        y: -100,
+        ease: 'none',
+        scrollTrigger: {
+          trigger: containerRef.current,
+          start: 'top bottom',
+          end: 'bottom top',
+          scrub: 1,
+        }
+      });
+
       // Section label reveal
       gsap.fromTo(labelRef.current,
         { x: -50, opacity: 0 },
@@ -40,19 +118,46 @@ export const About = () => {
         }
       );
 
-      // Word-by-word illumination with scroll scrub
+      // Left art animation — morphing gradient shape
+      gsap.fromTo(leftArtRef.current,
+        { scale: 0.6, opacity: 0, rotation: -10 },
+        {
+          scale: 1, opacity: 1, rotation: 0,
+          duration: 1.5, ease: 'power3.out',
+          scrollTrigger: {
+            trigger: containerRef.current,
+            start: 'top 75%',
+          }
+        }
+      );
+
+      // Morphing animation on scroll
+      gsap.to(leftArtRef.current, {
+        rotation: 5,
+        borderRadius: '40% 60% 55% 45% / 55% 40% 60% 45%',
+        ease: 'none',
+        scrollTrigger: {
+          trigger: containerRef.current,
+          start: 'top bottom',
+          end: 'bottom top',
+          scrub: 2,
+        }
+      });
+
+      // Word-by-word cinematic reveal
       wordsRef.current.filter(Boolean).forEach((word, i) => {
         gsap.fromTo(word,
-          { opacity: 0.15, y: 5 },
+          { opacity: 0.08, y: 8, filter: 'blur(4px)' },
           {
             opacity: 1,
             y: 0,
+            filter: 'blur(0px)',
             color: 'var(--text-primary)',
-            duration: 0.5,
+            duration: 0.6,
             scrollTrigger: {
               trigger: containerRef.current,
-              start: `top+=${i * 15} 65%`,
-              end: `top+=${i * 15 + 80} 65%`,
+              start: `top+=${i * 12} 60%`,
+              end: `top+=${i * 12 + 60} 60%`,
               scrub: 1,
             }
           }
@@ -65,38 +170,48 @@ export const About = () => {
 
   return (
     <section className={styles.about} ref={containerRef} id="about">
+      {/* Background watermark */}
+      <div className={styles.watermark} ref={watermarkRef}>ABOUT</div>
+
       <div className={styles.inner}>
-        <div className="section-label" ref={labelRef}>
-          <span>About Me</span>
-        </div>
-
-        <div className={styles.decorLine} ref={decorLineRef}></div>
-
-        <p className={styles.text}>
-          {words.map((word, idx) => (
-            <span
-              key={idx}
-              className={styles.word}
-              ref={el => wordsRef.current[idx] = el}
-            >
-              {word}
-            </span>
-          ))}
-        </p>
-
-        {/* Stats row */}
-        <div className={styles.stats}>
-          <div className={styles.stat}>
-            <span className={styles.statNumber}>3+</span>
-            <span className={styles.statLabel}>Projects Shipped</span>
+        <div className={styles.splitLayout}>
+          {/* Left: Abstract art */}
+          <div className={styles.leftColumn}>
+            <div className={styles.artContainer}>
+              <div className={styles.artShape} ref={leftArtRef}>
+                <div className={styles.artInner}></div>
+                <div className={styles.artRing}></div>
+                <div className={styles.artRing2}></div>
+              </div>
+            </div>
           </div>
-          <div className={styles.stat}>
-            <span className={styles.statNumber}>5★</span>
-            <span className={styles.statLabel}>HackerRank C</span>
-          </div>
-          <div className={styles.stat}>
-            <span className={styles.statNumber}>∞</span>
-            <span className={styles.statLabel}>Curiosity</span>
+
+          {/* Right: Content */}
+          <div className={styles.rightColumn}>
+            <div className="section-label" ref={labelRef}>
+              <span>About Me</span>
+            </div>
+
+            <div className={styles.decorLine} ref={decorLineRef}></div>
+
+            <p className={styles.text}>
+              {words.map((word, idx) => (
+                <span
+                  key={idx}
+                  className={styles.word}
+                  ref={el => wordsRef.current[idx] = el}
+                >
+                  {word}
+                </span>
+              ))}
+            </p>
+
+            {/* Stats row */}
+            <div className={styles.stats}>
+              <AnimatedStat value="3" suffix="+" label="Projects Shipped" index={0} />
+              <AnimatedStat value="5" suffix="★" label="HackerRank C" index={1} />
+              <AnimatedStat value="∞" suffix="" label="Curiosity" index={2} />
+            </div>
           </div>
         </div>
       </div>

@@ -50,8 +50,9 @@
   gap: 0.25em;
   width: max-content;
   position: relative;
-  transition: color 0.4s ease, transform 0.4s var(--ease-out-expo);
+  transition: color 0.4s ease;
   text-decoration: none;
+  will-change: transform;
 }
 
 .ctaLink:hover {
@@ -60,14 +61,31 @@
 
 .ctaLinkInner {
   display: inline-block;
+  background: var(--gradient-hero);
+  background-size: 300% 300%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: gradientCTA 6s ease infinite paused;
+}
+
+.ctaLink:hover .ctaLinkInner {
+  animation-play-state: running;
+}
+
+@keyframes gradientCTA {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
 }
 
 .ctaArrow {
   transition: transform 0.4s var(--ease-out-expo);
+  color: var(--accent-violet);
 }
 
 .ctaLink:hover .ctaArrow {
-  transform: translate(5px, -5px);
+  transform: translate(8px, -8px) rotate(-5deg);
 }
 
 .ctaLink::after {
@@ -77,7 +95,7 @@
   left: 0;
   width: 100%;
   height: 0.06em;
-  background: var(--accent-violet);
+  background: var(--gradient-primary);
   transform: scaleX(0);
   transform-origin: right center;
   transition: transform 0.6s var(--ease-out-expo);
@@ -94,7 +112,7 @@
   margin: 0 auto;
   width: 100%;
   height: 1px;
-  background: linear-gradient(90deg, var(--accent-violet), var(--accent-cyan), transparent);
+  background: linear-gradient(90deg, var(--accent-violet), var(--accent-cyan), var(--accent-rose), transparent);
   margin-top: var(--spacing-xl);
   margin-bottom: var(--spacing-xl);
   transform-origin: left center;
@@ -134,8 +152,59 @@
   will-change: transform;
 }
 
+.magneticLink::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background: var(--accent-cyan);
+  transform: scaleX(0);
+  transform-origin: right center;
+  transition: transform 0.5s var(--ease-out-expo);
+}
+
 .magneticLink:hover {
   color: var(--accent-cyan);
+}
+
+.magneticLink:hover::after {
+  transform: scaleX(1);
+  transform-origin: left center;
+}
+
+/* ── Back to Top ── */
+.backToTop {
+  position: relative;
+  align-self: flex-end;
+  margin-top: 2rem;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.25rem;
+  border-radius: 100px;
+  background: rgba(138, 92, 245, 0.12);
+  border: 1px solid rgba(138, 92, 245, 0.25);
+  color: var(--text-primary);
+  font-family: var(--font-heading);
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  transition: all 0.4s var(--ease-out-expo);
+  will-change: transform;
+}
+
+.backToTop:hover {
+  background: rgba(138, 92, 245, 0.25);
+  border-color: rgba(138, 92, 245, 0.5);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(138, 92, 245, 0.2);
 }
 
 /* ── Bottom ── */
@@ -175,7 +244,17 @@
   50% { opacity: 0.5; transform: scale(0.8); }
 }
 
+@media (max-width: 1024px) {
+  .ctaGiant {
+    font-size: clamp(4rem, 12vw, 12rem);
+  }
+}
+
 @media (max-width: 768px) {
+  .footer {
+    padding: var(--spacing-section) var(--spacing-md) var(--spacing-md);
+  }
+
   .ctaGiant {
     font-size: clamp(3rem, 15vw, 8rem);
   }
@@ -187,7 +266,48 @@
 
   .bottomBar {
     flex-direction: column;
-    gap: 0.5rem;
-    text-align: center;
+    gap: 0.75rem;
+    align-items: flex-start;
+    padding-top: 1.5rem;
+  }
+
+  .backToTop {
+    margin-top: 1rem;
+    align-self: flex-start;
+    padding: 0.6rem 1rem;
+    font-size: 0.65rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .footer {
+    padding: var(--spacing-xl) var(--spacing-md) var(--spacing-md);
+  }
+
+  .ctaGiant {
+    font-size: clamp(2.5rem, 13vw, 5rem);
+  }
+
+  .ctaSmall {
+    font-size: 0.85rem;
+  }
+
+  .separator {
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+  }
+
+  .magneticLink {
+    font-size: 0.95rem;
+  }
+
+  .bottomBar {
+    margin-top: 2rem;
+    font-size: 0.75rem;
+  }
+
+  .backToTop {
+    width: 100%;
+    justify-content: center;
   }
 }

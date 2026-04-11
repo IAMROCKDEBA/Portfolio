@@ -1,14 +1,17 @@
-import React, { useEffect, useRef } from 'react';
+"use client";
+
+import React from 'react';
 import { motion } from 'framer-motion';
 import { ArrowRight, Zap } from 'lucide-react';
-import styles from './Hero.module.css';
 
-const AetherFlowCanvas = ({ isLoaded }) => {
-    const canvasRef = useRef(null);
+// A utility function for class names
+const cn = (...classes: any[]) => classes.filter(Boolean).join(' ');
 
-    useEffect(() => {
-        if (!isLoaded) return;
-        
+// The main hero component
+const AetherFlowHero = () => {
+    const canvasRef = React.useRef(null);
+
+    React.useEffect(() => {
         const canvas = canvasRef.current;
         if (!canvas) return;
         
@@ -17,6 +20,7 @@ const AetherFlowCanvas = ({ isLoaded }) => {
         let particles = [];
         const mouse = { x: null, y: null, radius: 200 };
 
+        // Moved Particle class definition here to avoid initialization errors
         class Particle {
             constructor(x, y, directionX, directionY, size, color) {
                 this.x = x;
@@ -35,7 +39,6 @@ const AetherFlowCanvas = ({ isLoaded }) => {
             }
 
             update() {
-                // Bounce off edges
                 if (this.x > canvas.width || this.x < 0) {
                     this.directionX = -this.directionX;
                 }
@@ -43,7 +46,7 @@ const AetherFlowCanvas = ({ isLoaded }) => {
                     this.directionY = -this.directionY;
                 }
 
-                // Evasive Mouse collision detection
+                // Mouse collision detection
                 if (mouse.x !== null && mouse.y !== null) {
                     let dx = mouse.x - this.x;
                     let dy = mouse.y - this.y;
@@ -68,12 +71,11 @@ const AetherFlowCanvas = ({ isLoaded }) => {
             let numberOfParticles = (canvas.height * canvas.width) / 9000;
             for (let i = 0; i < numberOfParticles; i++) {
                 let size = (Math.random() * 2) + 1;
-                let x = (Math.random() * ((innerWidth - size * 2) - (size * 2)) + size * 2);
-                let y = (Math.random() * ((innerHeight - size * 2) - (size * 2)) + size * 2);
+                let x = (Math.random() * ((window.innerWidth - size * 2) - (size * 2)) + size * 2);
+                let y = (Math.random() * ((window.innerHeight - size * 2) - (size * 2)) + size * 2);
                 let directionX = (Math.random() * 0.4) - 0.2;
                 let directionY = (Math.random() * 0.4) - 0.2;
-                // Bright purple
-                let color = 'rgba(191, 128, 255, 0.8)'; 
+                let color = 'rgba(191, 128, 255, 0.8)'; // Brighter purple
                 particles.push(new Particle(x, y, directionX, directionY, size, color));
             }
         };
@@ -118,8 +120,9 @@ const AetherFlowCanvas = ({ isLoaded }) => {
 
         const animate = () => {
             animationFrameId = requestAnimationFrame(animate);
-            // Clear frame
-            ctx.clearRect(0, 0, innerWidth, innerHeight);
+            // Set the background color inside the canvas draw loop
+            ctx.fillStyle = 'black';
+            ctx.fillRect(0, 0, window.innerWidth, window.innerHeight);
 
             for (let i = 0; i < particles.length; i++) {
                 particles[i].update();
@@ -149,19 +152,15 @@ const AetherFlowCanvas = ({ isLoaded }) => {
             window.removeEventListener('mouseout', handleMouseOut);
             cancelAnimationFrame(animationFrameId);
         };
-    }, [isLoaded]);
+    }, []);
 
-    return <canvas ref={canvasRef} className={styles.particleCanvas}></canvas>;
-};
-
-export const Hero = ({ isLoaded }) => {
     const fadeUpVariants = {
         hidden: { opacity: 0, y: 20 },
         visible: (i) => ({
             opacity: 1,
             y: 0,
             transition: {
-                delay: i * 0.2 + 0.8, // Wait for preloader to finish
+                delay: i * 0.2 + 0.5,
                 duration: 0.8,
                 ease: "easeInOut",
             },
@@ -169,20 +168,23 @@ export const Hero = ({ isLoaded }) => {
     };
 
     return (
-        <section className={styles.hero} id="hero">
-            <AetherFlowCanvas isLoaded={isLoaded} />
+        // Removed bg-black from this container
+        <div className="relative h-screen w-full flex flex-col items-center justify-center overflow-hidden">
+            {/* The canvas is now the primary background */}
+            <canvas ref={canvasRef} className="absolute top-0 left-0 w-full h-full"></canvas>
             
-            <div className={styles.content}>
+            {/* Overlay HTML Content */}
+            <div className="relative z-10 text-center p-6">
                 <motion.div
                     custom={0}
                     variants={fadeUpVariants}
                     initial="hidden"
-                    animate={isLoaded ? "visible" : "hidden"}
-                    className={styles.badge}
+                    animate="visible"
+                    className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-purple-500/10 border border-purple-500/20 mb-6 backdrop-blur-sm"
                 >
-                    <Zap className={styles.badgeIcon} />
-                    <span className={styles.badgeText}>
-                        Creative Full-Stack Developer
+                    <Zap className="h-4 w-4 text-purple-400" />
+                    <span className="text-sm font-medium text-gray-200">
+                        Dynamic Rendering Engine
                     </span>
                 </motion.div>
 
@@ -190,37 +192,36 @@ export const Hero = ({ isLoaded }) => {
                     custom={1}
                     variants={fadeUpVariants}
                     initial="hidden"
-                    animate={isLoaded ? "visible" : "hidden"}
-                    className={styles.title}
+                    animate="visible"
+                    className="text-5xl md:text-8xl font-bold tracking-tighter mb-6 bg-clip-text text-transparent bg-gradient-to-b from-white to-gray-400"
                 >
-                    DEBARSHI SAU
+                    Aether Flow
                 </motion.h1>
 
                 <motion.p
                     custom={2}
                     variants={fadeUpVariants}
                     initial="hidden"
-                    animate={isLoaded ? "visible" : "hidden"}
-                    className={styles.description}
+                    animate="visible"
+                    className="max-w-2xl mx-auto text-lg text-gray-400 mb-10"
                 >
-                    An intelligent, adaptive full-stack developer creating fluid digital experiences that feel alive and respond to user interaction in real-time.
+                    An intelligent, adaptive framework for creating fluid digital experiences that feel alive and respond to user interaction in real-time.
                 </motion.p>
 
                 <motion.div
                     custom={3}
                     variants={fadeUpVariants}
                     initial="hidden"
-                    animate={isLoaded ? "visible" : "hidden"}
+                    animate="visible"
                 >
-                    <button 
-                        className={styles.ctaButton}
-                        onClick={() => document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' })}
-                    >
-                        Explore My Work
-                        <ArrowRight className={styles.ctaIcon} />
+                    <button className="px-8 py-4 bg-white text-black font-semibold rounded-lg shadow-lg hover:bg-gray-200 transition-colors duration-300 flex items-center gap-2 mx-auto">
+                        Explore the Engine
+                        <ArrowRight className="h-5 w-5" />
                     </button>
                 </motion.div>
             </div>
-        </section>
+        </div>
     );
 };
+
+export default AetherFlowHero;

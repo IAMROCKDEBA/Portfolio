@@ -1,4 +1,4 @@
-.dot, .ring {
+.dot, .ring, .glow, .trail {
   position: fixed;
   top: 0;
   left: 0;
@@ -9,23 +9,40 @@
 }
 
 .dot {
-  width: 8px;
-  height: 8px;
+  width: 6px;
+  height: 6px;
   background: var(--text-primary);
   transform: translate(-50%, -50%);
   mix-blend-mode: difference;
 }
 
 .ring {
-  width: 40px;
-  height: 40px;
-  border: 1.5px solid var(--text-primary);
+  width: 36px;
+  height: 36px;
+  border: 1.5px solid rgba(240, 238, 246, 0.8);
   transform: translate(-50%, -50%);
   mix-blend-mode: difference;
+  transition: border-color 0.3s ease;
+}
+
+.glow {
+  width: 120px;
+  height: 120px;
+  background: radial-gradient(circle, rgba(138, 92, 245, 0.08) 0%, transparent 70%);
+  transform: translate(-50%, -50%);
+  z-index: calc(var(--z-cursor) - 1);
+}
+
+.trail {
+  width: 10px;
+  height: 10px;
+  background: var(--accent-violet);
+  transform: translate(-50%, -50%);
+  mix-blend-mode: screen;
 }
 
 @media (hover: none) and (pointer: coarse) {
-  .dot, .ring {
+  .dot, .ring, .glow, .trail {
     display: none;
   }
 }

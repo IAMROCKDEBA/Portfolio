@@ -20,22 +20,18 @@ const VelocityMarquee = ({ items, baseSpeed = 1, direction = 1, reverseColor = f
     const track = trackRef.current;
     if (!track) return;
 
-    // Duplicate children for seamless loop  
     const trackWidth = track.scrollWidth / 2;
     let velocity = 0;
 
     const animate = () => {
-      // Get scroll velocity from Lenis if available
       const scrollVelocity = lenis ? Math.abs(lenis.velocity) : 0;
-      const speedMultiplier = 1 + scrollVelocity * 0.08;
+      const speedMultiplier = 1 + scrollVelocity * 0.1;
 
-      // Skew based on velocity direction
-      const skewTarget = lenis ? lenis.velocity * 0.3 : 0;
+      const skewTarget = lenis ? lenis.velocity * 0.4 : 0;
       velocity += (skewTarget - velocity) * 0.1;
 
       xRef.current += baseSpeed * direction * speedMultiplier;
 
-      // Reset position for seamless loop
       if (direction === 1 && xRef.current >= trackWidth) {
         xRef.current -= trackWidth;
       } else if (direction === -1 && Math.abs(xRef.current) >= trackWidth) {
@@ -50,7 +46,6 @@ const VelocityMarquee = ({ items, baseSpeed = 1, direction = 1, reverseColor = f
     return () => cancelAnimationFrame(animRef.current);
   }, [baseSpeed, direction, lenis]);
 
-  // Duplicate items for seamless wrap
   const allItems = [...items, ...items];
 
   return (
@@ -62,9 +57,12 @@ const VelocityMarquee = ({ items, baseSpeed = 1, direction = 1, reverseColor = f
               className={`${styles.skillItem} ${reverseColor ? styles.alt : ''}`}
               data-cursor="hover"
             >
-              {item}
+              <span className={styles.skillText}>{item}</span>
+              <span className={styles.skillGlow}></span>
             </span>
-            <div className={styles.separator}>✦</div>
+            <div className={styles.separator}>
+              <span className={styles.separatorIcon}>✦</span>
+            </div>
           </React.Fragment>
         ))}
       </div>
@@ -75,6 +73,7 @@ const VelocityMarquee = ({ items, baseSpeed = 1, direction = 1, reverseColor = f
 export const Skills = () => {
   const sectionRef = useRef(null);
   const headingRef = useRef(null);
+  const watermarkRef = useRef(null);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -88,6 +87,21 @@ export const Skills = () => {
           }
         }
       );
+
+      // Watermark parallax
+      gsap.fromTo(watermarkRef.current,
+        { x: 200 },
+        {
+          x: -200,
+          ease: 'none',
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: 'top bottom',
+            end: 'bottom top',
+            scrub: 1,
+          }
+        }
+      );
     }, sectionRef);
 
     return () => ctx.revert();
@@ -95,6 +109,9 @@ export const Skills = () => {
 
   return (
     <section className={styles.skills} ref={sectionRef} id="skills">
+      {/* Background watermark */}
+      <div className={styles.watermark} ref={watermarkRef}>SKILLS</div>
+
       <div className={styles.headingRow} ref={headingRef}>
         <span className="section-label">
           <span>Tech Stack</span>

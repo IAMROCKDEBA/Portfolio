@@ -2,14 +2,39 @@
   position: fixed;
   inset: 0;
   z-index: var(--z-preloader);
-  background: var(--bg-primary);
   display: flex;
   align-items: center;
   justify-content: center;
   will-change: transform;
 }
 
+/* ── Split Panel Bars ── */
+.barsContainer {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  z-index: 0;
+}
+
+.bar {
+  flex: 1;
+  background: var(--bg-primary);
+  will-change: transform;
+}
+
+.bar:nth-child(odd) {
+  background: #060609;
+}
+
+.bar:nth-child(even) {
+  background: #040406;
+}
+
+/* ── Content ── */
 .content {
+  position: relative;
+  z-index: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -22,20 +47,52 @@
 
 .name {
   font-family: var(--font-display);
-  font-size: clamp(1.5rem, 4vw, 3rem);
+  font-size: clamp(1.8rem, 5vw, 4rem);
   font-weight: 800;
-  letter-spacing: 0.3em;
+  letter-spacing: 0.25em;
   text-transform: uppercase;
   color: var(--text-primary);
-  display: block;
+  display: flex;
   will-change: transform, opacity;
 }
 
+/* ── Loading Line ── */
 .line {
-  width: 200px;
+  width: 250px;
   height: 1px;
-  background: var(--gradient-primary);
+  background: rgba(255, 255, 255, 0.1);
   transform-origin: left center;
+  position: relative;
+  overflow: hidden;
+}
+
+.lineShimmer {
+  position: absolute;
+  inset: 0;
+  background: var(--gradient-primary);
+  animation: shimmerSlide 1.5s ease-in-out infinite;
+}
+
+@keyframes shimmerSlide {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+/* ── Bottom Row ── */
+.bottomRow {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.year {
+  font-family: var(--font-heading);
+  font-size: 0.7rem;
+  font-weight: 400;
+  letter-spacing: 0.3em;
+  color: var(--text-tertiary);
+  opacity: 0;
 }
 
 .counterWrapper {
@@ -44,11 +101,43 @@
 
 .counter {
   font-family: var(--font-heading);
-  font-size: clamp(3rem, 8vw, 7rem);
-  font-weight: 300;
-  color: var(--text-tertiary);
+  font-size: clamp(3.5rem, 9vw, 8rem);
+  font-weight: 200;
+  color: rgba(240, 238, 246, 0.06);
   letter-spacing: -0.02em;
   display: block;
   will-change: transform, opacity;
   line-height: 1;
+}
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+  .name {
+    font-size: clamp(1.2rem, 5vw, 2rem);
+    letter-spacing: 0.15em;
+  }
+  
+  .line {
+    width: 200px;
+  }
+  
+  .counter {
+    font-size: clamp(2.5rem, 12vw, 4rem);
+  }
+}
+
+@media (max-width: 480px) {
+  .name {
+    font-size: clamp(1rem, 6vw, 1.5rem);
+    letter-spacing: 0.1em;
+  }
+  
+  .line {
+    width: 150px;
+  }
+  
+  .year {
+    font-size: 0.6rem;
+    letter-spacing: 0.2em;
+  }
 }
