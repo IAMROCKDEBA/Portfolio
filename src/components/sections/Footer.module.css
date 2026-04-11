@@ -6,6 +6,7 @@
   padding: var(--spacing-section) var(--spacing-lg) var(--spacing-lg);
   position: relative;
   z-index: var(--z-content);
+  overflow: hidden;
 }
 
 /* ── CTA ── */

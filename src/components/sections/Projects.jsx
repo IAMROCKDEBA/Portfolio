@@ -64,7 +64,6 @@ export const Projects = () => {
           gsap.to(card, {
             scale: 0.92 - i * 0.02,
             opacity: 0.6,
-            filter: 'blur(3px)',
             ease: 'none',
             scrollTrigger: {
               trigger: cards[i + 1],

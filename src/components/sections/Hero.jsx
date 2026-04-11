@@ -156,14 +156,14 @@ const AetherFlowCanvas = ({ isLoaded }) => {
 
 export const Hero = ({ isLoaded }) => {
     const fadeUpVariants = {
-        hidden: { opacity: 0, y: 20 },
+        hidden: { opacity: 0, y: 30 },
         visible: (i) => ({
             opacity: 1,
             y: 0,
             transition: {
-                delay: i * 0.2 + 0.8, // Wait for preloader to finish
-                duration: 0.8,
-                ease: "easeInOut",
+                delay: i * 0.15 + 0.8, // Wait for preloader to finish
+                duration: 1.2,
+                ease: [0.16, 1, 0.3, 1], // Buttery smooth expo-out
             },
         }),
     };

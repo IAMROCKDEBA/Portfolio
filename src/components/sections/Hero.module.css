@@ -76,7 +76,7 @@
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  text-shadow: 0 0 80px rgba(255, 255, 255, 0.1);
+  will-change: transform, opacity;
 }
 
 /* ── Description ── */
@@ -133,5 +133,17 @@
   
   .description {
     margin-bottom: 2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .title {
+    font-size: clamp(1.8rem, 10vw, 3.5rem);
+    word-break: normal;
+    overflow-wrap: normal;
+  }
+  
+  .description {
+    font-size: clamp(0.95rem, 4vw, 1rem);
   }
 }
