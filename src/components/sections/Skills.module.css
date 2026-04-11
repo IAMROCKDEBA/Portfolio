@@ -46,7 +46,7 @@
   font-weight: 800;
   color: transparent;
   -webkit-text-stroke: 1.5px rgba(240, 238, 246, 0.1);
-  transition: all 0.5s var(--ease-out-expo);
+  transition: transform 0.5s var(--ease-out-expo), color 0.3s ease, -webkit-text-stroke 0.3s ease;
   white-space: nowrap;
   display: flex;
   align-items: center;
@@ -122,6 +122,10 @@
 }
 
 @media (max-width: 768px) {
+  .skillItem:hover, .skillItem.alt:hover {
+    text-shadow: none;
+  }
+
   .skillItem {
     font-size: clamp(2.5rem, 8vw, 5rem);
   }
