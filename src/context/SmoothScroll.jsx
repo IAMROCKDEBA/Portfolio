@@ -33,15 +33,17 @@ export const SmoothScrollProvider = ({ children }) => {
     // Integrate with GSAP ScrollTrigger
     lenisInstance.on('scroll', ScrollTrigger.update);
 
-    gsap.ticker.add((time) => {
+    // Store reference so the exact same function can be removed on cleanup
+    const tickerFn = (time) => {
       lenisInstance.raf(time * 1000);
-    });
+    };
+    gsap.ticker.add(tickerFn);
 
     gsap.ticker.lagSmoothing(0);
 
     return () => {
       lenisInstance.destroy();
-      gsap.ticker.remove(lenisInstance.raf);
+      gsap.ticker.remove(tickerFn);
     };
   }, []);
 

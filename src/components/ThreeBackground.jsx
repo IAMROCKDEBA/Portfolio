@@ -182,31 +182,31 @@ const AuroraPlane = () => {
     };
   }, [uniforms]);
 
-  // Track scroll
+  // Track scroll — only store position/velocity in refs; uniforms are updated in useFrame
   React.useEffect(() => {
     const handleScroll = () => {
       const scrollY = window.scrollY || document.documentElement.scrollTop;
-      const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
-      const scrollNorm = maxScroll > 0 ? scrollY / maxScroll : 0;
-      
-      // Calculate velocity
       scrollVelRef.current = scrollY - lastScrollRef.current;
       lastScrollRef.current = scrollY;
-      
-      uniforms.uScroll.value = scrollNorm;
     };
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
-  }, [uniforms]);
+  }, []);
 
   useFrame((state) => {
     if (meshRef.current) {
       uniforms.uTime.value = state.clock.elapsedTime;
+
+      // Update scroll uniform in the render loop so it's always frame-accurate
+      const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+      uniforms.uScroll.value = maxScroll > 0 ? lastScrollRef.current / maxScroll : 0;
+
       uniforms.uMouse.value.x += (mouseRef.current.x - uniforms.uMouse.value.x) * 0.04;
       uniforms.uMouse.value.y += (mouseRef.current.y - uniforms.uMouse.value.y) * 0.04;
-      
-      // Smooth velocity
+
+      // Smooth velocity, then reset ref so it decays to 0 when scroll stops
       uniforms.uScrollVelocity.value += (scrollVelRef.current - uniforms.uScrollVelocity.value) * 0.1;
+      scrollVelRef.current = 0;
     }
   });
 

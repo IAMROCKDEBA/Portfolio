@@ -23,12 +23,11 @@ const VelocityMarquee = ({ items, baseSpeed = 1, direction = 1, reverseColor = f
     const trackWidth = track.scrollWidth / 2;
     let velocity = 0;
 
-    let lastTime = null;
-
-    const animate = (time) => {
-      if (lastTime === null) lastTime = time;
-      const dt = time - lastTime;
-      lastTime = time;
+    // Use GSAP ticker instead of raw RAF so marquee is synchronized with the
+    // Lenis scroll engine — eliminates frame-timing desync during scroll
+    const animate = (_time, deltaTime) => {
+      // deltaTime from GSAP ticker is in ms, normalized to 60 fps
+      const timeScale = deltaTime ? deltaTime / 16.666 : 1;
 
       const scrollVelocity = lenis ? Math.abs(lenis.velocity) : 0;
       const speedMultiplier = 1 + scrollVelocity * 0.1;
@@ -36,11 +35,9 @@ const VelocityMarquee = ({ items, baseSpeed = 1, direction = 1, reverseColor = f
       const skewTarget = lenis ? lenis.velocity * 0.4 : 0;
       velocity += (skewTarget - velocity) * 0.1;
 
-      const timeScale = dt ? dt / 16.666 : 1;
-      
       // Initialize xRef appropriately on first frame if reversing
       if (direction === -1 && xRef.current === 0) {
-          xRef.current = trackWidth;
+        xRef.current = trackWidth;
       }
 
       xRef.current += baseSpeed * direction * speedMultiplier * timeScale;
@@ -52,11 +49,14 @@ const VelocityMarquee = ({ items, baseSpeed = 1, direction = 1, reverseColor = f
       }
 
       track.style.transform = `translate3d(${-xRef.current}px, 0, 0) skewX(${velocity}deg)`;
-      animRef.current = requestAnimationFrame(animate);
     };
 
-    animRef.current = requestAnimationFrame(animate);
-    return () => cancelAnimationFrame(animRef.current);
+    gsap.ticker.add(animate);
+    animRef.current = animate;
+    return () => {
+      gsap.ticker.remove(animate);
+      animRef.current = null;
+    };
   }, [baseSpeed, direction, lenis]);
 
   const allItems = [...items, ...items];

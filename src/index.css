@@ -69,6 +69,7 @@ html {
   scrollbar-width: none;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  will-change: scroll-position;
 }
 
 html::-webkit-scrollbar {
@@ -94,6 +95,7 @@ body::after {
   background-size: 128px 128px;
   mix-blend-mode: overlay;
   animation: grainShift 0.5s steps(4) infinite;
+  will-change: transform;
 }
 
 @keyframes grainShift {
