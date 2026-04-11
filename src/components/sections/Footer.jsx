@@ -8,7 +8,7 @@ import styles from './Footer.module.css';
 gsap.registerPlugin(ScrollTrigger);
 
 // Magnetic element that follows cursor
-const MagneticLink = ({ children, href, className = '' }) => {
+const MagneticLink = ({ children, href, className = '', target, rel }) => {
   const linkRef = useRef(null);
   const textRef = useRef(null);
 
@@ -45,7 +45,7 @@ const MagneticLink = ({ children, href, className = '' }) => {
   }, []);
 
   return (
-    <a href={href} ref={linkRef} className={`${styles.magneticLink} ${className}`} data-cursor="hover">
+    <a href={href} target={target} rel={rel} ref={linkRef} className={`${styles.magneticLink} ${className}`} data-cursor="hover">
       <span ref={textRef}>{children}</span>
     </a>
   );
@@ -179,10 +179,10 @@ export const Footer = () => {
           <MagneticLink href="tel:+919199360412">
             <span ref={el => linksRef.current[1] = el}>+91 91993 60412</span>
           </MagneticLink>
-          <MagneticLink href="#">
+          <MagneticLink href="https://www.linkedin.com/in/debarshi-sau-737932291/" target="_blank" rel="noopener noreferrer">
             <span ref={el => linksRef.current[2] = el}>LinkedIn</span>
           </MagneticLink>
-          <MagneticLink href="#">
+          <MagneticLink href="https://github.com/IAMROCKDEBA" target="_blank" rel="noopener noreferrer">
             <span ref={el => linksRef.current[3] = el}>GitHub</span>
           </MagneticLink>
         </div>
