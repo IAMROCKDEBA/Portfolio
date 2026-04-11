@@ -131,34 +131,37 @@ export const About = () => {
         }
       );
 
-      // Word-by-word cinematic reveal — driven by ONE ScrollTrigger instead of
-      // 47 individual instances. Identical visual: words reveal in staggered
-      // sequence as you scroll. One scrub instead of 47 eliminates the per-word
-      // update overhead that caused main-thread saturation on mobile.
+      // Word-by-word cinematic reveal — one GSAP timeline scrubbed by one
+      // ScrollTrigger. Timing is identical to the original 47 individual tweens:
+      // each word reveals over 60px of scroll, staggered 12px apart.
+      //
+      // Using `animation: wordsTl` instead of an `onUpdate` callback lets GSAP
+      // own all transforms through its internal cache. The previous approach used
+      // gsap.set() (which wrote _gsap.y = 8) then overwrote transforms via direct
+      // style mutations — when the scrub tween reconciled its cached state it reset
+      // elements to y:8, producing the snap-jump. The timeline also only re-renders
+      // the 1–2 tweens crossing the playhead per frame instead of all 47.
       const wordsArray = wordsRef.current.filter(Boolean);
-      const wordCount = wordsArray.length;
-      const totalRange = wordCount * 12 + 60;
+      const wordCount  = wordsArray.length;
+      // totalRange matches the original: last word ends at (wordCount-1)*12 + 60
+      const totalRange = (wordCount - 1) * 12 + 60;
 
-      gsap.set(wordsArray, { opacity: 0.08, y: 8, filter: 'blur(4px)' });
+      const wordsTl = gsap.timeline({ paused: true });
+      wordsArray.forEach((word, i) => {
+        wordsTl.fromTo(
+          word,
+          { opacity: 0.08, y: 8, filter: 'blur(4px)' },
+          { opacity: 1, y: 0, filter: 'blur(0px)', color: 'var(--text-primary)', ease: 'none', duration: 60 },
+          i * 12
+        );
+      });
 
       ScrollTrigger.create({
         trigger: containerRef.current,
         start: 'top 60%',
         end: `top+=${totalRange} 60%`,
+        animation: wordsTl,
         scrub: 1,
-        onUpdate(self) {
-          const p = self.progress;
-          for (let i = 0; i < wordCount; i++) {
-            const word = wordsArray[i];
-            const wStart = (i * 12) / totalRange;
-            const wEnd   = (i * 12 + 60) / totalRange;
-            const wp = Math.max(0, Math.min(1, (p - wStart) / (wEnd - wStart)));
-            word.style.opacity   = (0.08 + wp * 0.92).toFixed(3);
-            word.style.transform = `translateY(${(8 * (1 - wp)).toFixed(2)}px)`;
-            word.style.filter    = `blur(${(4 * (1 - wp)).toFixed(2)}px)`;
-            word.style.color     = wp > 0.5 ? 'var(--text-primary)' : '';
-          }
-        },
       });
     }, containerRef);
 
