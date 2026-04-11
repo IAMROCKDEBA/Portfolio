@@ -11,6 +11,11 @@ export const SmoothScrollProvider = ({ children }) => {
   const [lenis, setLenis] = useState(null);
 
   useEffect(() => {
+    // Completely disable custom JS scrolling engine on mobile/touch devices for native buttery performance
+    if (window.innerWidth <= 768 || ('ontouchstart' in window) || navigator.maxTouchPoints > 0) {
+      return;
+    }
+
     const lenisInstance = new Lenis({
       duration: 1.2,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), // standard exponential ease

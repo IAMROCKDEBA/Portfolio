@@ -232,8 +232,8 @@ export const ThreeBackground = () => {
     }}>
       <Canvas
         camera={{ position: [0, 0, 1] }}
-        gl={{ antialias: false, alpha: false }}
-        dpr={[1, 1.5]}
+        gl={{ antialias: false, alpha: false, powerPreference: 'high-performance' }}
+        dpr={window.innerWidth < 768 ? 0.75 : Math.min(window.devicePixelRatio, 1.2)}
       >
         <AuroraPlane />
       </Canvas>

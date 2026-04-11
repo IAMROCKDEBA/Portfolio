@@ -147,6 +147,8 @@ export const Footer = () => {
   const scrollToTop = () => {
     if (lenis) {
       lenis.scrollTo(0, { duration: 3 });
+    } else {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   };
 

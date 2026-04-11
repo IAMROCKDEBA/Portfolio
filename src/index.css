@@ -235,6 +235,10 @@ a, button, [data-cursor="hover"] {
 
 /* ── Responsive ── */
 @media (max-width: 768px) {
+  body::after {
+    display: none; /* Disable heavy film-grain blend-mode on mobile for smooth scrolling */
+  }
+
   :root {
     --spacing-section: clamp(4rem, 10vh, 8rem);
     --spacing-lg: 1.5rem;
