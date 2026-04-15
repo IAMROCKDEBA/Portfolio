@@ -22,3 +22,7 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Local Copilot skills
+.github/skills/spline-3d-integration/
+spline-3d-skill.zip
