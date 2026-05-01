@@ -1,0 +1,16 @@
+# robots.txt for debarshisau.in
+# Allow all search engine crawlers full access
+
+User-agent: *
+Allow: /
+
+# Sitemap location
+Sitemap: https://debarshisau.in/sitemap.xml
+
+# Specifically welcome Google
+User-agent: Googlebot
+Allow: /
+
+# Allow Google Image bot for OG image indexing
+User-agent: Googlebot-Image
+Allow: /portfolio.png
