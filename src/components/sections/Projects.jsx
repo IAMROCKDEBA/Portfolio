@@ -14,6 +14,7 @@ const projects = [
     tech: ['React', 'Node.js', 'Express', 'PostgreSQL', 'JWT'],
     description: 'Architected and deployed a full-stack student-mentor management platform with secure JWT-based role-based access control. Built real-time problem tracking, analytics dashboards, and automated reporting modules.',
     color: '#8a5cf5',
+    link: 'https://classconnector.netlify.app',
   },
   {
     num: '02',
@@ -22,6 +23,7 @@ const projects = [
     tech: ['React', 'Node.js', 'Express', 'MongoDB', 'RBAC'],
     description: 'Engineered a university food-court management application replacing error-prone manual processes. Implemented secure role-based dashboards for students, wardens, and staff with real-time submission tracking.',
     color: '#00e5ff',
+    link: 'https://altplate.vercel.app/',
   },
   {
     num: '03',
@@ -30,6 +32,7 @@ const projects = [
     tech: ['Node.js', 'Express', 'PowerShell', 'Telegram API'],
     description: 'Developed a bot-integrated application to remotely monitor a home PC server via Telegram with real-time push alerts. Implemented PowerShell agent and Node.js backend for heartbeat signal relay.',
     color: '#ff2d75',
+    link: 'https://pc-sentinel.vercel.app/',
   },
 ];
 
@@ -170,10 +173,10 @@ export const Projects = () => {
 
                 <p className={styles.projectDesc} data-desc>{proj.description}</p>
 
-                <div className={styles.cardFooter} data-cta data-cursor="hover">
+                <a href={proj.link} target="_blank" rel="noopener noreferrer" className={styles.cardFooter} data-cta data-cursor="hover" style={{ textDecoration: 'none', color: 'inherit' }}>
                   <span className={styles.viewProject}>View Project</span>
                   <ArrowUpRight size={18} />
-                </div>
+                </a>
               </div>
 
               {/* Cursor spotlight */}
