@@ -178,7 +178,7 @@ export const About = () => {
           {/* Left: Profile Picture */}
           <div className={styles.leftColumn}>
             <div className={styles.imageContainer} ref={imageRef}>
-              <img src="/image.jpg" alt="Profile" className={styles.profileImage} />
+              <img src="/image.jpg" alt="Debarshi Sau — Full-Stack Developer and Creative Technologist" className={styles.profileImage} />
             </div>
           </div>
 
@@ -208,6 +208,45 @@ export const About = () => {
               <AnimatedStat value="5" suffix="★" label="HackerRank C" index={1} />
               <AnimatedStat value="∞" suffix="" label="Curiosity" index={2} />
             </div>
+          </div>
+        </div>
+
+        {/* ── Photo Gallery ── */}
+        <div className={styles.gallery}>
+          <div className={styles.galleryHeader}>
+            <span className={styles.galleryLabel}>Moments</span>
+            <div className={styles.galleryLine}></div>
+          </div>
+          <div className={styles.galleryGrid}>
+            {[
+              {
+                src: '/debarshi-sau-conference.jpg',
+                alt: 'Debarshi Sau at a professional conference — full-stack developer and creative technologist',
+                caption: 'Conference'
+              },
+              {
+                src: '/debarshi-sau-delhiAiImapct.jpg',
+                alt: 'Debarshi Sau at AI Impact Summit 2026 India — exploring artificial intelligence innovations',
+                caption: 'AI Impact Summit 2026'
+              },
+              {
+                src: '/debarshi-sau-quantumcomputing.jpg',
+                alt: 'Debarshi Sau with IBM Quantum System Two — quantum computing exploration at tech summit',
+                caption: 'IBM Quantum Computing'
+              }
+            ].map((photo, idx) => (
+              <figure key={idx} className={styles.galleryItem}>
+                <div className={styles.galleryImageWrap}>
+                  <img
+                    src={photo.src}
+                    alt={photo.alt}
+                    className={styles.galleryImage}
+                    loading="lazy"
+                  />
+                </div>
+                <figcaption className={styles.galleryCaption}>{photo.caption}</figcaption>
+              </figure>
+            ))}
           </div>
         </div>
       </div>
