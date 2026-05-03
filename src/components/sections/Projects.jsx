@@ -14,7 +14,7 @@ const projects = [
     tech: ['React', 'Node.js', 'Express', 'PostgreSQL', 'JWT'],
     description: 'Architected and deployed a full-stack student-mentor management platform with secure JWT-based role-based access control. Built real-time problem tracking, analytics dashboards, and automated reporting modules.',
     color: '#8a5cf5',
-    link: 'https://classconnector.netlify.app',
+    link: 'https://auclassconnect.vercel.app/',
   },
   {
     num: '02',
