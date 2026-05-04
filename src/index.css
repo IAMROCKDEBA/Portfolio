@@ -69,6 +69,7 @@ html {
   scrollbar-width: none;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  overscroll-behavior: none;
 }
 
 html::-webkit-scrollbar {
@@ -79,6 +80,7 @@ body {
   overflow-x: hidden;
   background-color: var(--bg-primary);
   position: relative;
+  overscroll-behavior: none;
 }
 
 /* ── Film Grain Overlay ── */

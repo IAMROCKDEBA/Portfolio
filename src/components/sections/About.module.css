@@ -145,8 +145,6 @@
 .gallery {
   margin-top: 5rem;
   position: relative;
-  content-visibility: auto;
-  contain-intrinsic-size: auto 2000px;
 }
 
 .galleryHeader {
@@ -188,10 +186,6 @@
   border: 1px solid rgba(255, 255, 255, 0.05);
   background: rgba(255, 255, 255, 0.02);
   contain: layout style paint;
-}
-
-.galleryItemFeatured {
-  /* no-op in masonry — all items flow naturally */
 }
 
 .galleryImageWrap {

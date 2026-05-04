@@ -43,6 +43,8 @@ export const Projects = () => {
   const progressRef = useRef(null);
 
   useEffect(() => {
+    const isMobile = window.innerWidth <= 768 || ('ontouchstart' in window) || navigator.maxTouchPoints > 0;
+
     const ctx = gsap.context(() => {
       // Header animation
       gsap.fromTo(headerRef.current,
@@ -51,54 +53,93 @@ export const Projects = () => {
           y: 0, opacity: 1, duration: 1.2, ease: 'power3.out',
           scrollTrigger: {
             trigger: wrapperRef.current,
-            start: 'top 80%',
+            start: 'top 85%',
           }
         }
       );
 
-      // Stacking cards — each card pins and the next one stacks on top
       const cards = cardsRef.current.filter(Boolean);
 
-      cards.forEach((card, i) => {
-        const isLast = i === cards.length - 1;
+      if (isMobile) {
+        // ── Mobile: stacking cards + safe one-shot reveals ──
+        cards.forEach((card, i) => {
+          const isLast = i === cards.length - 1;
 
-        // Scale down slightly as subsequent cards stack
-        if (!isLast) {
-          gsap.to(card, {
-            scale: 0.92 - i * 0.02,
-            opacity: 0.6,
-            ease: 'none',
+          // Stacking scale-down effect (same as desktop)
+          if (!isLast) {
+            gsap.to(card, {
+              scale: 0.92 - i * 0.02,
+              opacity: 0.6,
+              ease: 'none',
+              scrollTrigger: {
+                trigger: cards[i + 1],
+                start: 'top bottom',
+                end: 'top 20%',
+                scrub: 1,
+              }
+            });
+          }
+
+          const num = card.querySelector('[data-num]');
+          const title = card.querySelector('[data-title]');
+          const desc = card.querySelector('[data-desc]');
+          const techEls = card.querySelectorAll('[data-tech]');
+          const cta = card.querySelector('[data-cta]');
+
+          const tl = gsap.timeline({
             scrollTrigger: {
-              trigger: cards[i + 1],
-              start: 'top bottom',
-              end: 'top 20%',
-              scrub: 1,
+              trigger: card,
+              start: 'top 90%',
+              toggleActions: 'play none none none',
             }
           });
-        }
 
-        // Reveal animation for each card
-        const content = card.querySelector('[data-content]');
-        const num = card.querySelector('[data-num]');
-        const title = card.querySelector('[data-title]');
-        const desc = card.querySelector('[data-desc]');
-        const techEls = card.querySelectorAll('[data-tech]');
-        const cta = card.querySelector('[data-cta]');
-
-        const tl = gsap.timeline({
-          scrollTrigger: {
-            trigger: card,
-            start: 'top 70%',
-            toggleActions: 'play none none reverse',
-          }
+          if (num) tl.fromTo(num, { y: 40, opacity: 0 }, { y: 0, opacity: 1, duration: 0.6, ease: 'power3.out' }, 0);
+          if (title) tl.fromTo(title, { y: 30, opacity: 0 }, { y: 0, opacity: 1, duration: 0.6, ease: 'power3.out' }, 0.05);
+          if (desc) tl.fromTo(desc, { y: 20, opacity: 0 }, { y: 0, opacity: 1, duration: 0.5, ease: 'power3.out' }, 0.15);
+          if (techEls.length) tl.fromTo(techEls, { y: 15, opacity: 0 }, { y: 0, opacity: 1, duration: 0.4, ease: 'power3.out', stagger: 0.03 }, 0.2);
+          if (cta) tl.fromTo(cta, { y: 15, opacity: 0 }, { y: 0, opacity: 1, duration: 0.4, ease: 'power3.out' }, 0.3);
         });
+      } else {
+        // ── Desktop: stacking cards with scrub ──
+        cards.forEach((card, i) => {
+          const isLast = i === cards.length - 1;
 
-        if (num) tl.fromTo(num, { y: 60, opacity: 0, scale: 0.8 }, { y: 0, opacity: 1, scale: 1, duration: 0.8, ease: 'power3.out' }, 0);
-        if (title) tl.fromTo(title, { y: 40, opacity: 0, filter: 'blur(8px)' }, { y: 0, opacity: 1, filter: 'blur(0px)', duration: 0.8, ease: 'power3.out' }, 0.1);
-        if (desc) tl.fromTo(desc, { y: 30, opacity: 0 }, { y: 0, opacity: 1, duration: 0.7, ease: 'power3.out' }, 0.25);
-        if (techEls.length) tl.fromTo(techEls, { y: 20, opacity: 0, scale: 0.9 }, { y: 0, opacity: 1, scale: 1, duration: 0.5, ease: 'power3.out', stagger: 0.05 }, 0.35);
-        if (cta) tl.fromTo(cta, { y: 20, opacity: 0 }, { y: 0, opacity: 1, duration: 0.5, ease: 'power3.out' }, 0.5);
-      });
+          if (!isLast) {
+            gsap.to(card, {
+              scale: 0.92 - i * 0.02,
+              opacity: 0.6,
+              ease: 'none',
+              scrollTrigger: {
+                trigger: cards[i + 1],
+                start: 'top bottom',
+                end: 'top 20%',
+                scrub: 1,
+              }
+            });
+          }
+
+          const num = card.querySelector('[data-num]');
+          const title = card.querySelector('[data-title]');
+          const desc = card.querySelector('[data-desc]');
+          const techEls = card.querySelectorAll('[data-tech]');
+          const cta = card.querySelector('[data-cta]');
+
+          const tl = gsap.timeline({
+            scrollTrigger: {
+              trigger: card,
+              start: 'top 70%',
+              toggleActions: 'play none none reverse',
+            }
+          });
+
+          if (num) tl.fromTo(num, { y: 60, opacity: 0, scale: 0.8 }, { y: 0, opacity: 1, scale: 1, duration: 0.8, ease: 'power3.out' }, 0);
+          if (title) tl.fromTo(title, { y: 40, opacity: 0, filter: 'blur(8px)' }, { y: 0, opacity: 1, filter: 'blur(0px)', duration: 0.8, ease: 'power3.out' }, 0.1);
+          if (desc) tl.fromTo(desc, { y: 30, opacity: 0 }, { y: 0, opacity: 1, duration: 0.7, ease: 'power3.out' }, 0.25);
+          if (techEls.length) tl.fromTo(techEls, { y: 20, opacity: 0, scale: 0.9 }, { y: 0, opacity: 1, scale: 1, duration: 0.5, ease: 'power3.out', stagger: 0.05 }, 0.35);
+          if (cta) tl.fromTo(cta, { y: 20, opacity: 0 }, { y: 0, opacity: 1, duration: 0.5, ease: 'power3.out' }, 0.5);
+        });
+      }
 
       // Progress bar
       gsap.to(progressRef.current, {

@@ -78,13 +78,22 @@ const AetherFlowCanvas = ({ isLoaded }) => {
             }
         };
 
+        let lastWidth = window.innerWidth;
+
         const resizeCanvas = () => {
-            canvas.width = window.innerWidth;
+            const newWidth = window.innerWidth;
+            // Skip height-only changes (mobile address bar hide/show).
+            // Setting canvas.width/height clears ALL drawn content.
+            if (newWidth === lastWidth) return;
+            lastWidth = newWidth;
+            canvas.width = newWidth;
             canvas.height = window.innerHeight;
-            init(); 
+            init();
         };
         window.addEventListener('resize', resizeCanvas);
-        resizeCanvas();
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        init();
 
         const connect = () => {
             let opacityValue = 1;

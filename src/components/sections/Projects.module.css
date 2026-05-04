@@ -251,6 +251,7 @@
   }
 
   .cardWrapper {
+    top: 8vh;
     min-height: auto;
     padding: 1rem var(--spacing-md);
   }

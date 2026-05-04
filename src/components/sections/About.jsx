@@ -163,6 +163,29 @@ export const About = () => {
         animation: wordsTl,
         scrub: 1,
       });
+
+      // Refresh ScrollTrigger after gallery images load — their natural
+      // aspect-ratio changes the page height, invalidating trigger positions
+      // for every section below (Projects, Footer).
+      const galleryImages = containerRef.current?.querySelectorAll('img[loading="lazy"]');
+      if (galleryImages?.length) {
+        let loaded = 0;
+        const total = galleryImages.length;
+        const onLoad = () => {
+          loaded++;
+          if (loaded >= total) {
+            ScrollTrigger.refresh();
+          }
+        };
+        galleryImages.forEach(img => {
+          if (img.complete) {
+            loaded++;
+          } else {
+            img.addEventListener('load', onLoad, { once: true });
+          }
+        });
+        if (loaded >= total) ScrollTrigger.refresh();
+      }
     }, containerRef);
 
     return () => ctx.revert();

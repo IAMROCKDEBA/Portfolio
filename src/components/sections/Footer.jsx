@@ -62,21 +62,26 @@ export const Footer = () => {
   const lenis = useSmoothScroll();
 
   useEffect(() => {
+    const isMobile = window.innerWidth <= 768 || ('ontouchstart' in window) || navigator.maxTouchPoints > 0;
+    const triggerStart = isMobile ? 'top 95%' : 'top 75%';
+    const toggleMode = isMobile ? 'play none none none' : 'play none none reverse';
+
     const ctx = gsap.context(() => {
       // Giant CTA reveal
       gsap.fromTo(titleRef.current,
-        { y: 150, opacity: 0 },
+        { y: isMobile ? 60 : 150, opacity: 0 },
         {
-          y: 0, opacity: 1, duration: 1.5, ease: 'power3.out',
+          y: 0, opacity: 1, duration: 1.2, ease: 'power3.out',
           scrollTrigger: {
             trigger: sectionRef.current,
-            start: 'top 75%',
+            start: triggerStart,
+            toggleActions: toggleMode,
           }
         }
       );
 
-      // Magnetic CTA link effect
-      if (ctaLinkRef.current) {
+      // Magnetic CTA link effect (desktop only)
+      if (!isMobile && ctaLinkRef.current) {
         const el = ctaLinkRef.current;
         const handleMouseMove = (e) => {
           const rect = el.getBoundingClientRect();
@@ -98,7 +103,8 @@ export const Footer = () => {
           scaleX: 1, duration: 1.2, ease: 'power3.out',
           scrollTrigger: {
             trigger: lineRef.current,
-            start: 'top 85%',
+            start: isMobile ? 'top 95%' : 'top 85%',
+            toggleActions: toggleMode,
           }
         }
       );
@@ -111,7 +117,8 @@ export const Footer = () => {
           stagger: 0.1,
           scrollTrigger: {
             trigger: lineRef.current,
-            start: 'top 80%',
+            start: isMobile ? 'top 95%' : 'top 80%',
+            toggleActions: toggleMode,
           }
         }
       );
@@ -123,7 +130,8 @@ export const Footer = () => {
           opacity: 1, duration: 1,
           scrollTrigger: {
             trigger: bottomRef.current,
-            start: 'top 95%',
+            start: 'top 98%',
+            toggleActions: toggleMode,
           }
         }
       );
@@ -135,7 +143,8 @@ export const Footer = () => {
           scale: 1, opacity: 1, duration: 0.6, ease: 'elastic.out(1, 0.5)',
           scrollTrigger: {
             trigger: sectionRef.current,
-            start: 'top 60%',
+            start: isMobile ? 'top 80%' : 'top 60%',
+            toggleActions: toggleMode,
           }
         }
       );
