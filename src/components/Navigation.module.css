@@ -19,15 +19,15 @@
   z-index: var(--z-nav);
   display: flex;
   align-items: center;
-  gap: 1.5rem;
-  padding: 0.6rem 0.8rem 0.6rem 1.2rem;
-  background: rgba(8, 8, 16, 0.65);
-  backdrop-filter: blur(24px) saturate(1.8);
-  -webkit-backdrop-filter: blur(24px) saturate(1.8);
-  border: 1px solid rgba(255, 255, 255, 0.06);
+  gap: 1.8rem;
+  padding: 0.75rem 1.2rem 0.75rem 1.5rem;
+  background: rgba(8, 8, 16, 0.82);
+  backdrop-filter: blur(16px) saturate(1.4);
+  -webkit-backdrop-filter: blur(16px) saturate(1.4);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 100px;
   will-change: transform, opacity;
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.4);
 }
 
 /* ── Logo ── */
@@ -44,15 +44,17 @@
 .logoText {
   font-family: var(--font-display);
   font-weight: 800;
-  font-size: 1.1rem;
+  font-size: 1.25rem;
   letter-spacing: 0.05em;
   color: var(--text-primary);
   transition: color 0.3s ease;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 .logoDot {
-  width: 6px;
-  height: 6px;
+  width: 7px;
+  height: 7px;
   border-radius: 50%;
   background: var(--accent-violet);
   box-shadow: 0 0 10px rgba(138, 92, 245, 0.6);
@@ -96,19 +98,21 @@
 
 .navLink {
   font-family: var(--font-heading);
-  font-size: 0.78rem;
+  font-size: 0.88rem;
   font-weight: 500;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.04em;
   color: var(--text-secondary);
   background: none;
   border: none;
-  padding: 0.5rem 0.85rem;
+  padding: 0.55rem 1rem;
   border-radius: 100px;
   cursor: pointer;
   transition: color 0.3s ease;
   white-space: nowrap;
   position: relative;
   z-index: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 .navLink:hover {
@@ -121,18 +125,18 @@
 
 @media (max-width: 768px) {
   .nav {
-    gap: 0.5rem;
-    padding: 0.5rem 0.7rem 0.5rem 1rem;
+    gap: 0.6rem;
+    padding: 0.55rem 0.8rem 0.55rem 1rem;
     top: 1rem;
   }
 
   .navLink {
-    font-size: 0.72rem;
-    padding: 0.4rem 0.65rem;
+    font-size: 0.76rem;
+    padding: 0.45rem 0.7rem;
   }
 
   .logoText {
-    font-size: 1rem;
+    font-size: 1.1rem;
   }
 }
 

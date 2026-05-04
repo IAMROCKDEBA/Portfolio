@@ -3,7 +3,7 @@
         xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
   <url>
     <loc>https://debarshisau.in/</loc>
-    <lastmod>2026-05-03</lastmod>
+    <lastmod>2026-05-04</lastmod>
     <changefreq>monthly</changefreq>
     <priority>1.0</priority>
     <image:image>
@@ -12,22 +12,22 @@
       <image:caption>Profile photo of Debarshi Sau, a full-stack developer and creative technologist from India</image:caption>
     </image:image>
     <image:image>
-      <image:loc>https://debarshisau.in/image.jpg</image:loc>
+      <image:loc>https://debarshisau.in/image.webp</image:loc>
       <image:title>Debarshi Sau — About Me</image:title>
       <image:caption>Debarshi Sau, B.Tech Computer Science and Engineering student at Adamas University</image:caption>
     </image:image>
     <image:image>
-      <image:loc>https://debarshisau.in/debarshi-sau-conference.jpg</image:loc>
+      <image:loc>https://debarshisau.in/debarshi-sau-conference.webp</image:loc>
       <image:title>Debarshi Sau at a Professional Conference</image:title>
       <image:caption>Debarshi Sau, full-stack developer and creative technologist, at a professional conference</image:caption>
     </image:image>
     <image:image>
-      <image:loc>https://debarshisau.in/debarshi-sau-delhiAiImapct.jpg</image:loc>
+      <image:loc>https://debarshisau.in/debarshi-sau-delhiAiImapct.webp</image:loc>
       <image:title>Debarshi Sau at AI Impact Summit 2026 India</image:title>
       <image:caption>Debarshi Sau attending the AI Impact Summit 2026 in India, exploring artificial intelligence innovations</image:caption>
     </image:image>
     <image:image>
-      <image:loc>https://debarshisau.in/debarshi-sau-quantumcomputing.jpg</image:loc>
+      <image:loc>https://debarshisau.in/debarshi-sau-quantumcomputing.webp</image:loc>
       <image:title>Debarshi Sau with IBM Quantum System Two</image:title>
       <image:caption>Debarshi Sau exploring IBM Quantum System Two at a technology summit, showcasing interest in quantum computing</image:caption>
     </image:image>

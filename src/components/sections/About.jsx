@@ -178,7 +178,7 @@ export const About = () => {
           {/* Left: Profile Picture */}
           <div className={styles.leftColumn}>
             <div className={styles.imageContainer} ref={imageRef}>
-              <img src="/image.jpg" alt="Debarshi Sau — Full-Stack Developer and Creative Technologist" className={styles.profileImage} />
+              <img src="/image.webp" alt="Debarshi Sau — Full-Stack Developer and Creative Technologist" className={styles.profileImage} />
             </div>
           </div>
 
@@ -212,7 +212,7 @@ export const About = () => {
         </div>
 
         {/* ── Photo Gallery ── */}
-        <div className={styles.gallery}>
+        <div id="moments" className={styles.gallery}>
           <div className={styles.galleryHeader}>
             <span className={styles.galleryLabel}>Moments</span>
             <div className={styles.galleryLine}></div>
@@ -220,28 +220,81 @@ export const About = () => {
           <div className={styles.galleryGrid}>
             {[
               {
-                src: '/debarshi-sau-conference.jpg',
+                src: '/AiSummitMettingRoomHall3.webp',
+                alt: 'Debarshi Sau at AI Impact Summit 2026 — Mezzanine Hall 3 Meeting Rooms entrance',
+                caption: 'AI Impact Summit — Hall 3',
+                featured: true
+              },
+              {
+                src: '/debarshi-sau-conference.webp',
                 alt: 'Debarshi Sau at a professional conference — full-stack developer and creative technologist',
                 caption: 'Conference'
               },
               {
-                src: '/debarshi-sau-delhiAiImapct.jpg',
+                src: '/debarshi-sau-delhiAiImapct.webp',
                 alt: 'Debarshi Sau at AI Impact Summit 2026 India — exploring artificial intelligence innovations',
                 caption: 'AI Impact Summit 2026'
               },
               {
-                src: '/debarshi-sau-quantumcomputing.jpg',
+                src: '/AiSummitWiproIntelligence.webp',
+                alt: 'Debarshi Sau explores Wipro Intelligence HealthAI robotic surgery demo at AI Impact Summit 2026',
+                caption: 'Wipro HealthAI Robotics',
+                featured: true
+              },
+              {
+                src: '/debarshi-sau-quantumcomputing.webp',
                 alt: 'Debarshi Sau with IBM Quantum System Two — quantum computing exploration at tech summit',
                 caption: 'IBM Quantum Computing'
+              },
+              {
+                src: '/AiSummitIntelAi.webp',
+                alt: 'Debarshi Sau visits Intel AI pavilion — AI that is built for everyone — at AI Impact Summit 2026',
+                caption: 'Intel AI Pavilion'
+              },
+              {
+                src: '/AISummitQualcomm.webp',
+                alt: 'Debarshi Sau at Qualcomm booth — unlocking a new era of possibilities — AI Impact Summit 2026',
+                caption: 'Qualcomm Booth',
+                featured: true
+              },
+              {
+                src: '/AiSummitAirtelRobot.webp',
+                alt: 'Debarshi Sau photographs Airtel humanoid robot at AI Impact Summit 2026',
+                caption: 'Airtel Humanoid Robot'
+              },
+              {
+                src: '/AiSummitHandshakeWithRoboDog.webp',
+                alt: 'Debarshi Sau interacts with a robotic dog at AI Impact Summit 2026',
+                caption: 'Robo Dog Interaction'
+              },
+              {
+                src: '/AiSummitInfosys.webp',
+                alt: 'Debarshi Sau at Infosys Topaz enterprise AI booth — AI Impact Summit 2026',
+                caption: 'Infosys Topaz AI',
+                featured: true
+              },
+              {
+                src: '/AiSummitHandshakWithRobot.webp',
+                alt: 'Debarshi Sau shaking hands with a humanoid robot at AI Impact Summit 2026',
+                caption: 'Robot Handshake'
+              },
+              {
+                src: '/AiSummitGyanBharatam.webp',
+                alt: 'Debarshi Sau visits Gyan Bharatam — Ministry of Culture exhibit — Manuscript to Mind at AI Impact Summit 2026',
+                caption: 'Gyan Bharatam Exhibit'
               }
             ].map((photo, idx) => (
-              <figure key={idx} className={styles.galleryItem}>
+              <figure
+                key={idx}
+                className={`${styles.galleryItem} ${photo.featured ? styles.galleryItemFeatured : ''}`}
+              >
                 <div className={styles.galleryImageWrap}>
                   <img
                     src={photo.src}
                     alt={photo.alt}
                     className={styles.galleryImage}
                     loading="lazy"
+                    decoding="async"
                   />
                 </div>
                 <figcaption className={styles.galleryCaption}>{photo.caption}</figcaption>
