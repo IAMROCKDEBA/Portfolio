@@ -34,6 +34,15 @@ const projects = [
     color: '#ff2d75',
     link: 'https://pc-sentinel.vercel.app/',
   },
+  {
+    num: '04',
+    title: 'Daily Brain Train',
+    category: 'Mental Wellness Platform',
+    tech: ['React', 'Node.js', 'Framer Motion', 'Tailwind CSS'],
+    description: 'Daily Brain Trainer is a minimalist mental wellness platform that offers a "gentle daily pause" through calm, low-stress cognitive exercises. Designed with a soothing pastel aesthetic, it prioritizes mindfulness and consistent habits over intense competition, allowing users to keep their minds active through quick, relaxing daily sessions and simple progress tracking.',
+    color: '#a8e6cf',
+    link: 'https://dailybraintrainer.vercel.app/',
+  },
 ];
 
 export const Projects = () => {
