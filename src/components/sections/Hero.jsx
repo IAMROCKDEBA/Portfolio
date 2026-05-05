@@ -219,7 +219,7 @@ export const Hero = ({ isLoaded }) => {
                     animate={isLoaded ? "visible" : "hidden"}
                     className={styles.description}
                 >
-                    An intelligent, adaptive full-stack developer creating fluid digital experiences that feel alive and respond to user interaction in real-time.
+                    Hi, I'm Debarshi, an adaptive full-stack developer creating fluid digital experiences that feel alive and respond to user interaction in real-time.
                 </motion.p>
 
                 <motion.div
