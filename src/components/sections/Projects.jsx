@@ -36,7 +36,7 @@ const projects = [
   },
   {
     num: '04',
-    title: 'Daily Brain Train',
+    title: 'Daily Brain Trainer',
     category: 'Mental Wellness Platform',
     tech: ['React', 'Node.js', 'Framer Motion', 'Tailwind CSS'],
     description: 'Daily Brain Trainer is a minimalist mental wellness platform that offers a "gentle daily pause" through calm, low-stress cognitive exercises. Designed with a soothing pastel aesthetic, it prioritizes mindfulness and consistent habits over intense competition, allowing users to keep their minds active through quick, relaxing daily sessions and simple progress tracking.',
