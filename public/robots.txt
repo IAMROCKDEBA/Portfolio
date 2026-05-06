@@ -4,7 +4,7 @@
 User-agent: *
 Allow: /
 
-# Block AI Summit gallery photos from indexing
+# Block AI Summit gallery photos from indexing (private gallery)
 Disallow: /AISummitQualcomm.webp
 Disallow: /AiSummitAirtelRobot.webp
 Disallow: /AiSummitGyanBharatam.webp
@@ -18,10 +18,15 @@ Disallow: /AiSummitWiproIntelligence.webp
 # Sitemap location
 Sitemap: https://debarshisau.in/sitemap.xml
 
-# Specifically welcome Google
-User-agent: Googlebot
-Allow: /
-
-# Allow Google Image bot for OG image indexing
+# Google Image bot — allow all public images
 User-agent: Googlebot-Image
-Allow: /portfolio.png
+Allow: /
+Disallow: /AISummitQualcomm.webp
+Disallow: /AiSummitAirtelRobot.webp
+Disallow: /AiSummitGyanBharatam.webp
+Disallow: /AiSummitHandshakWithRobot.webp
+Disallow: /AiSummitHandshakeWithRoboDog.webp
+Disallow: /AiSummitInfosys.webp
+Disallow: /AiSummitIntelAi.webp
+Disallow: /AiSummitMettingRoomHall3.webp
+Disallow: /AiSummitWiproIntelligence.webp
